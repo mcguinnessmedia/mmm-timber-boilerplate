@@ -2,6 +2,7 @@
 
 namespace MMM;
 
+use MMM\FieldGroups\SeoFields;
 use Timber\{Timber, Site};
 use MMM\Setup\{Assets, Security};
 use MMM\Services\FieldGroupRegistryService;
@@ -13,7 +14,7 @@ class Theme
 
   private Assets $assets;
   private Security $security;
-  private FieldGroupRegistryService $fieldsRegistry;
+
 
   private function init():void
   {
@@ -50,12 +51,12 @@ class Theme
 
   private function registerFieldGroups(): void
   {
-    $this->fieldsRegistry = new FieldGroupRegistryService();
+    $fieldsRegistry = new FieldGroupRegistryService();
 
-    // TODO: Add field groups
-    // $this->fieldsRegistry->register(FieldName::class)
+    // Add field groups here
+    $fieldsRegistry->register(SeoFields::class);
 
-    $this->fieldsRegistry->init();
+    $fieldsRegistry->init();
   }
 
   /**
