@@ -14,7 +14,7 @@ class ViteService
   private ?array $manifest = null;
   private bool $manifestLoaded = false;
 
-  private function __construct()
+  private function init(): void
   {
     $this->distPath = get_template_directory() . '/assets/dist';
     $this->distUri = get_template_directory_uri() . '/assets/dist';

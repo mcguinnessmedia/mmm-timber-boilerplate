@@ -17,7 +17,11 @@ trait Singleton
     return self::$instance;
   }
 
-  abstract private function __construct();
+  final private function __construct() {
+    $this->init();
+  }
+
+  abstract private function init(): void;
 
   final protected function __clone(): void {}
 

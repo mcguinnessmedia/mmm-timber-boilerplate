@@ -14,7 +14,7 @@ class Theme
   private static ?Theme $instance = null;
   private Assets $assets;
 
-  final private function __construct()
+  private function init():void
   {
     // Set Timber directory
     Timber::$dirname = ['views'];
