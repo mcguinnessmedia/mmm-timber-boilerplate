@@ -1,0 +1,38 @@
+<!doctype html>
+<!--suppress HtmlRequiredTitleElement, HtmlRequiredLangAttribute -->
+<html {{ site.language_attributes }}>
+  <head>
+    <meta charset='UTF-8'>
+    <meta name='viewport'
+          content='width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0'>
+    {{ function('wp_head') }}
+  </head>
+  <body class='{{ body_class }}'>
+    {{ function('wp_body_open') }}
+
+    <header>
+      <div class='site-logo'></div>
+      <nav>
+        <ul>
+          {% for item in menu.items %}
+            <li>
+              <a href='{{ item.url|e }}' target='{{ item.target|e }}'>
+                {{ item.title|e }}
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+
+    </footer>
+
+    {{ function('wp_footer') }}
+  </body>
+</html>
