@@ -11,7 +11,6 @@ class Theme
 {
   use Singleton;
 
-  private static ?Theme $instance = null;
   private Assets $assets;
   private Security $security;
 
@@ -24,7 +23,7 @@ class Theme
     $this->assets = new Assets();
 
     // Add WordPress security
-    $this->security = new Security();
+    $this->security = Security::getInstance();
 
     // Register hooks
     add_action('after_setup_theme', [$this, 'setup']);

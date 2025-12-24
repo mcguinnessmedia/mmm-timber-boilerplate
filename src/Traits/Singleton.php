@@ -7,7 +7,7 @@ use MMM\Theme;
 
 trait Singleton
 {
-  private static ?self $instance;
+  private static ?self $instance = null;
 
   public static function getInstance(): self
   {

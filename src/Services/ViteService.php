@@ -8,7 +8,6 @@ class ViteService
 {
   use Singleton;
 
-  private static ?ViteService $instance = null;
   private string $distPath;
   private string $distUri;
   private ?array $manifest = null;
