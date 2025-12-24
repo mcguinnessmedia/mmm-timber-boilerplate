@@ -2,6 +2,7 @@
 
 namespace MMM;
 
+use MMM\Setup\Security;
 use Timber\Timber;
 use Timber\Site;
 use MMM\Setup\Assets;
@@ -13,6 +14,7 @@ class Theme
 
   private static ?Theme $instance = null;
   private Assets $assets;
+  private Security $security;
 
   private function init():void
   {
@@ -21,6 +23,9 @@ class Theme
 
     // Initialize assets
     $this->assets = new Assets();
+
+    // Add WordPress security
+    $this->security = new Security();
 
     // Register hooks
     add_action('after_setup_theme', [$this, 'setup']);
