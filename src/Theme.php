@@ -2,9 +2,9 @@
 
 namespace MMM;
 
-use Timber\Timber;
-use Timber\Site;
+use Timber\{Timber, Site};
 use MMM\Setup\{Assets, Security};
+use MMM\Services\FieldGroupRegistryService;
 use MMM\Traits\Singleton;
 
 class Theme
@@ -13,6 +13,7 @@ class Theme
 
   private Assets $assets;
   private Security $security;
+  private FieldGroupRegistryService $fieldsRegistry;
 
   private function init():void
   {
@@ -29,6 +30,8 @@ class Theme
     add_action('after_setup_theme', [$this, 'setup']);
     add_filter('timber/context', [$this, 'addToContext']);
     add_filter('use_block_editor_for_post_type', '__return_false');
+
+    $this->registerFieldGroups();
   }
 
   /**
@@ -43,6 +46,16 @@ class Theme
     register_nav_menus([
       'primary' => __('Primary Menu'),
     ]);
+  }
+
+  private function registerFieldGroups(): void
+  {
+    $this->fieldsRegistry = new FieldGroupRegistryService();
+
+    // TODO: Add field groups
+    // $this->fieldsRegistry->register(FieldName::class)
+
+    $this->fieldsRegistry->init();
   }
 
   /**
