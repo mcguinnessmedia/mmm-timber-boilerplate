@@ -2,8 +2,12 @@
 
 namespace MMM\Services;
 
+use MMM\Traits\Singleton;
+
 class ViteService
 {
+  use Singleton;
+
   private static ?ViteService $instance = null;
   private string $distPath;
   private string $distUri;
@@ -15,23 +19,6 @@ class ViteService
     $this->distPath = get_template_directory() . '/assets/dist';
     $this->distUri = get_template_directory_uri() . '/assets/dist';
     $this->loadManifest();
-  }
-
-  public static function getInstance(): self
-  {
-    if (self::$instance === null) {
-      self::$instance = new self();
-    }
-    return self::$instance;
-  }
-
-  // Prevent cloning
-  private function __clone() {}
-
-  // Prevent unserialization
-  public function __wakeup()
-  {
-    throw new \Exception("Cannot unserialize singleton");
   }
 
   private function loadManifest(): void

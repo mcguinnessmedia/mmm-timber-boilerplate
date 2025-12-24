@@ -5,23 +5,14 @@ namespace MMM;
 use Timber\Timber;
 use Timber\Site;
 use MMM\Setup\Assets;
+use MMM\Traits\Singleton;
 
 class Theme
 {
+  use Singleton;
+
   private static ?Theme $instance = null;
   private Assets $assets;
-
-  /**
-   * Singleton pattern for Theme instance
-   * @return Theme
-   */
-  public static function getInstance(): Theme
-  {
-    if (null === self::$instance) {
-      self::$instance = new Theme();
-    }
-    return self::$instance;
-  }
 
   final private function __construct()
   {
@@ -35,15 +26,6 @@ class Theme
     add_action('after_setup_theme', [$this, 'setup']);
     add_filter('timber/context', [$this, 'addToContext']);
     add_filter('use_block_editor_for_post_type', '__return_false');
-  }
-
-  // Prevent cloning
-  private function __clone() {}
-
-  // Prevent unserialization
-  public function __wakeup()
-  {
-    throw new \Exception("Cannot unserialize singleton");
   }
 
   /**
