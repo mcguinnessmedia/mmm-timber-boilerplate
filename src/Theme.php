@@ -2,10 +2,9 @@
 
 namespace MMM;
 
-use MMM\Setup\Security;
 use Timber\Timber;
 use Timber\Site;
-use MMM\Setup\Assets;
+use MMM\Setup\{Assets, Security};
 use MMM\Traits\Singleton;
 
 class Theme
