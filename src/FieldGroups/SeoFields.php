@@ -23,6 +23,7 @@ class SeoFields extends BaseFieldGroup
       ->addGroup('seo_metadata')
         ->addText('title')
         ->addTextarea('description')
+        ->addImage('image')
       ->endGroup();
   }
 }

@@ -12,7 +12,7 @@ class PageController extends BaseController
     $this->renderView(
       'pages/page.twig',
       [
-        'post' => Timber::get_post(get_the_ID(), Post::class),
+        'post' => Timber::get_post(get_the_ID()),
       ]
     );
   }

@@ -3,6 +3,7 @@
 namespace MMM;
 
 use MMM\FieldGroups\SeoFields;
+use MMM\Models\Post;
 use Timber\{Timber, Site};
 use MMM\Setup\{Assets, Security};
 use MMM\Services\FieldGroupRegistryService;
@@ -29,8 +30,11 @@ class Theme
 
     // Register hooks
     add_action('after_setup_theme', [$this, 'setup']);
-    add_filter('timber/context', [$this, 'addToContext']);
     add_filter('use_block_editor_for_post_type', '__return_false');
+
+    // Register Timber necessities
+    add_filter('timber/context', [$this, 'addToContext']);
+    add_filter('timber/post/classmap', [$this, 'classmap']);
 
     $this->registerFieldGroups();
   }
@@ -47,6 +51,14 @@ class Theme
     register_nav_menus([
       'primary' => __('Primary Menu'),
     ]);
+  }
+
+  public function classmap(array $classmap): array
+  {
+    $classmap['post'] = Post::class;
+    $classmap['page'] = Post::class;
+
+    return $classmap;
   }
 
   private function registerFieldGroups(): void

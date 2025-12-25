@@ -5,9 +5,10 @@
     <meta charset='UTF-8'>
     <meta name='viewport'
           content='width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0'>
+    <title>{{ post.acf.seo_metadata.title }}</title>
     {{ function('wp_head') }}
   </head>
-  <body class='{{ body_class }}'>
+  <body {{ function('body_class') }}>
     {{ function('wp_body_open') }}
 
     <header>

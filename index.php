@@ -2,5 +2,5 @@
 
 use MMM\Controllers\PageController;
 
-$page = new PageController();
-$page->render();
+$controller = new PageController();
+$controller->render();
