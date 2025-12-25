@@ -46,7 +46,6 @@ class Theme
   public function setup(): void
   {
     add_theme_support('post-thumbnails');
-    add_theme_support('title-tag');
 
     register_nav_menus([
       'primary' => __('Primary Menu'),
