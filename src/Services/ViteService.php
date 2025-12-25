@@ -76,22 +76,54 @@ class ViteService
 
   private function asset(string $entry): ?string
   {
-    if (!$this->manifest || !isset($this->manifest[$entry])) {
-      error_log('Vite asset not found in manifest: ' . $entry);
+    if (!$this->manifest) {
+      error_log('Vite manifest not loaded');
       return null;
     }
 
-    return $this->distUri . '/' . $this->manifest[$entry]['file'];
+    // Try direct lookup first (for full paths)
+    if (isset($this->manifest[$entry])) {
+      return $this->distUri . '/' . $this->manifest[$entry]['file'];
+    }
+
+    // Search by name field
+    foreach ($this->manifest as $manifestEntry) {
+      if (isset($manifestEntry['name']) && $manifestEntry['name'] === $entry) {
+        return $this->distUri . '/' . $manifestEntry['file'];
+      }
+    }
+
+    error_log('Vite asset not found in manifest: ' . $entry);
+    return null;
   }
 
   private function css(string $entry): array
   {
-    if (!$this->manifest || !isset($this->manifest[$entry]['css'])) {
+    if (!$this->manifest) {
+      return [];
+    }
+
+    $manifestEntry = null;
+
+    // Try direct lookup first (for full paths)
+    if (isset($this->manifest[$entry])) {
+      $manifestEntry = $this->manifest[$entry];
+    } else {
+      // Search by name field
+      foreach ($this->manifest as $item) {
+        if (isset($item['name']) && $item['name'] === $entry) {
+          $manifestEntry = $item;
+          break;
+        }
+      }
+    }
+
+    if (!$manifestEntry || !isset($manifestEntry['css'])) {
       return [];
     }
 
     $cssFiles = [];
-    foreach ($this->manifest[$entry]['css'] as $cssFile) {
+    foreach ($manifestEntry['css'] as $cssFile) {
       $cssFiles[] = $this->distUri . '/' . $cssFile;
     }
 
