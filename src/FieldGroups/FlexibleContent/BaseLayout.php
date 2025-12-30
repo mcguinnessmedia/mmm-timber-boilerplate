@@ -28,6 +28,11 @@ abstract class BaseLayout {
     return $this->fields;
   }
 
+  public function getView(): string
+  {
+    return 'views/partials/sections/' . $this->getName() . '.twig';
+  }
+
   public function getLayoutConfig(): array
   {
     return [
