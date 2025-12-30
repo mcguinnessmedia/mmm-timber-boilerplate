@@ -2,21 +2,16 @@
 
 namespace MMM\FieldGroups;
 
-use MMM\FieldGroups\FlexibleContent\BaseLayout;
-use MMM\FieldGroups\FlexibleContent\TwoColumnLayout;
+use MMM\Traits\HasFlexibleContent;
+use MMM\FieldGroups\FlexibleContent\{TwoColumnLayout};
 
 class PageContent extends BaseFieldGroup
 {
-  private array $layouts = [];
+  use HasFlexibleContent;
 
   public function __construct()
   {
     $this->registerLayout(new TwoColumnLayout());
-  }
-
-  public function registerLayout(BaseLayout $layout): void
-  {
-    $this->layouts[] = $layout;
   }
 
   public function getTitle(): string
