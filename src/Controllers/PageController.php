@@ -3,7 +3,6 @@
 namespace MMM\Controllers;
 
 use Timber\Timber;
-use MMM\Models\Post;
 
 class PageController extends BaseController
 {
