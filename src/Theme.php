@@ -2,9 +2,9 @@
 
 namespace MMM;
 
-use MMM\FieldGroups\SeoFields;
-use MMM\Models\Post;
 use Timber\{Timber, Site};
+use MMM\Models\Post;
+use MMM\FieldGroups\{SeoFields, PageContent};
 use MMM\Setup\{Assets, Security};
 use MMM\Services\FieldGroupRegistryService;
 use MMM\Traits\Singleton;
@@ -62,10 +62,11 @@ class Theme
 
   private function registerFieldGroups(): void
   {
-    $fieldsRegistry = new FieldGroupRegistryService();
+    $fieldsRegistry = FieldGroupRegistryService::getInstance();
 
     // Add field groups here
     $fieldsRegistry->register(SeoFields::class);
+    $fieldsRegistry->register(PageContent::class);
 
     $fieldsRegistry->init();
   }

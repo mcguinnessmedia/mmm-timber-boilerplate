@@ -3,10 +3,13 @@
 namespace MMM\Services;
 
 use MMM\FieldGroups\BaseFieldGroup;
+use MMM\Traits\Singleton;
 use InvalidArgumentException;
 
 class FieldGroupRegistryService
 {
+  use Singleton;
+
   private array $fieldGroups = [];
 
   public function init(): void {
