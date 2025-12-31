@@ -20,7 +20,7 @@ class FlexibleContentRegistryService
    * @param BaseLayout $layout
    * @return void
    */
-  public function registerLayout(BaseLayout $layout): void
+  public function register(BaseLayout $layout): void
   {
     $this->layoutRegistry[$layout->getName()] = $layout;
   }

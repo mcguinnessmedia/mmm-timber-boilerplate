@@ -3,6 +3,7 @@
 namespace MMM\Traits;
 
 use MMM\FieldGroups\FlexibleContent\BaseLayout;
+use MMM\Services\FlexibleContentRegistryService;
 
 trait HasFlexibleContent
 {
@@ -11,5 +12,6 @@ trait HasFlexibleContent
   public function registerLayout(BaseLayout $layout): void
   {
     $this->layouts[] = $layout;
+    FlexibleContentRegistryService::getInstance()->register($layout);
   }
 }
