@@ -1,0 +1,32 @@
+{% if media %}
+  <div class='media-wrapper {{ media.type }}'>
+
+    {% if media.type == 'image' and media.image %}
+      <img src="{{ media.image.url }}" alt="{{ media.image.alt }}" />
+
+    {% elseif media.type == 'slider' and media.gallery %}
+      {# TODO: Configure Swiper as needed #}
+      <div class='swiper'>
+        <div class='swiper-wrapper'>
+          {% for image in media.gallery %}
+            <div class='swiper-slide'>
+              <img src="{{ image.url }}" alt="{{ image.alt }}" />
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+    {% elseif media.type == 'embed' and media.embed %}
+      <div class='embed-container'>
+        {{ media.embed|raw }}
+      </div>
+
+    {% elseif media.type == 'upload' and media.upload %}
+      <video controls>
+        <source src="{{ media.upload.url }}" type="{{ media.upload.mime_type }}" />
+      </video>
+
+    {% endif %}
+
+  </div>
+{% endif %}
