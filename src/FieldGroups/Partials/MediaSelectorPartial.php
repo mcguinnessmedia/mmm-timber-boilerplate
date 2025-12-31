@@ -17,14 +17,13 @@ class MediaSelectorPartial extends BasePartial {
             'slider' => 'Slider',
             'embed' => 'Embedded Video',
             'upload' => 'Uploaded Video',
-            'mux' => 'Mux Video',
           ]
         ])
       ->addImage('image')->conditional('type', '==', 'image')
       ->addGallery('gallery')->conditional('type', '==', 'slider')
       ->addTextarea('embed')->conditional('type', '==', 'embed')
+      // TODO: add support for multiple video upload types (files for MP4, WebM, responsive sizes, etc)
       ->addFile('upload')->conditional('type', '==', 'upload')
-      ->addText('mux')->conditional('type', '==', 'mux')
     ->endGroup();
 
     return $fields;
