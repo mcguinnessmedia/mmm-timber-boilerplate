@@ -8,7 +8,7 @@ use StoutLogic\AcfBuilder\FieldNameCollisionException;
 abstract class BaseLayout {
   protected FieldsBuilder $fields;
 
-  abstract protected function getName(): string;
+  abstract public function getName(): string;
   abstract protected function getLabel(): string;
 
   /**

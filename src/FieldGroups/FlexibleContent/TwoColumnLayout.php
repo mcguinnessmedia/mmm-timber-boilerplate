@@ -6,7 +6,7 @@ use MMM\FieldGroups\Partials\ContentPartial;
 use MMM\FieldGroups\Partials\MediaSelectorPartial;
 
 class TwoColumnLayout extends BaseLayout {
-  protected function getName(): string
+  public function getName(): string
   {
     return 'two-column';
   }
