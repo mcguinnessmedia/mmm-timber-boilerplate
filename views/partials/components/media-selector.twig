@@ -6,7 +6,7 @@
 
     {% elseif media.type == 'slider' and media.gallery %}
       {# TODO: Configure Swiper as needed #}
-      <div class='swiper' data-slider-loop='true' data-slider-pagination='true'>
+      <div class='swiper' data-slider-loop='true' data-slider-navigation='true'>
         <div class='swiper-wrapper'>
           {% for image in media.gallery %}
             <div class='swiper-slide'>
