@@ -51,6 +51,7 @@ export default defineConfig({
       '@': resolve(__dirname, 'assets/src'),
       '@css': resolve(__dirname, 'assets/src/scss'),
       '@js': resolve(__dirname, 'assets/src/js'),
+      'node_modules': resolve(__dirname, 'node_modules'),
     }
   },
 
