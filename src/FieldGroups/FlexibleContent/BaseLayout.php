@@ -33,7 +33,7 @@ abstract class BaseLayout {
     return 'views/partials/sections/' . $this->getName() . '.twig';
   }
 
-  public function getLayoutConfig(): array
+  public function getConfig(): array
   {
     return [
       'name' => $this->getName(),
