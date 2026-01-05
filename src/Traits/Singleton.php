@@ -3,7 +3,6 @@
 namespace MMM\Traits;
 
 use Exception;
-use MMM\Theme;
 
 trait Singleton
 {
