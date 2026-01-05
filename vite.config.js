@@ -54,13 +54,4 @@ export default defineConfig({
       'node_modules': resolve(__dirname, 'node_modules'),
     }
   },
-
-  server: {
-    host: 'localhost',
-    port: 3000,
-    strictPort: true,
-    hmr: {
-      host: 'localhost',
-    }
-  },
 });
