@@ -11,7 +11,7 @@ export default defineConfig({
     manifest: true,
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'assets/src/js/main.js'),
+        main: resolve(__dirname, 'assets/src/js/main.ts'),
       },
       output: {
         entryFileNames: '[name].min.js',
