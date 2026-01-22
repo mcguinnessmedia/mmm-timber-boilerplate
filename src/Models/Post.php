@@ -13,7 +13,8 @@ class Post extends TimberPost
    */
   public function acf(): ?array
   {
-    return get_fields($this->ID);
+    $fields = get_fields($this->ID);
+    return $fields ?: null;
   }
 
   /**
