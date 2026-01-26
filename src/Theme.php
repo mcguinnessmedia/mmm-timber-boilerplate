@@ -6,7 +6,7 @@ use Timber\{Timber, Site};
 use MMM\Models\Post;
 use MMM\FieldGroups\{SeoFields, PageContent};
 use MMM\Setup\{Assets, Security};
-use MMM\Services\FieldGroupRegistryService;
+use MMM\Services\{FieldGroupRegistryService, TwigFilterService};
 use MMM\Traits\Singleton;
 
 class Theme
@@ -15,7 +15,7 @@ class Theme
 
   private Assets $assets;
   private Security $security;
-
+  private TwigFilterService $twigFilterService;
 
   private function init():void
   {
@@ -27,6 +27,7 @@ class Theme
 
     // Add WordPress security
     $this->security = Security::getInstance();
+    $this->twigFilterService = TwigFilterService::getInstance();
 
     // Register hooks
     add_action('after_setup_theme', [$this, 'setup']);
