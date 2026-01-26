@@ -12,6 +12,7 @@ class ViteService
   private string $distUri;
   private ?array $manifest = null;
   private bool $manifestLoaded = false;
+  private ?string $buildVersion = null;
 
   private function init(): void
   {
@@ -32,6 +33,8 @@ class ViteService
       });
       return;
     }
+
+    $this->buildVersion = (string) filemtime($manifestPath);
 
     $manifestContent = file_get_contents($manifestPath);
     $this->manifest = json_decode($manifestContent, true);
@@ -63,13 +66,13 @@ class ViteService
         $handle,
         $jsUrl,
         $dependencies,
-        null,
+        $this->buildVersion,
         ['in_footer' => true, 'strategy' => 'defer']
       );
       wp_script_add_data($handle, 'type', 'module');
 
       foreach ($cssUrls as $index => $cssUrl) {
-        wp_enqueue_style($handle . '-css-' . $index, $cssUrl, [], null);
+        wp_enqueue_style($handle . '-css-' . $index, $cssUrl, [], $this->buildVersion);
       }
     });
   }
