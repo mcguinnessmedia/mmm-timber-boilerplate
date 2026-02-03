@@ -1,10 +1,13 @@
 import {qs, qsa} from "./core/dom.js";
+import {initTabs} from "./ui/tabs.js";
 import Swiper from "swiper";
 import {Navigation, A11y} from "swiper/modules";
 
 import '@css/main.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
+  initTabs();
+
   if (document.querySelector('.swiper')) {
     const swiperInstances: HTMLElement[] = qsa<HTMLElement>('.swiper', document);
 
