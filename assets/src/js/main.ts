@@ -1,25 +1,11 @@
-import {qs, qsa} from "./core/dom.js";
 import {initTabs} from "./ui/tabs.js";
-import Swiper from "swiper";
-import {Navigation, A11y} from "swiper/modules";
+import {initModals} from "./ui/modal.js";
+import {initSliders} from "./ui/slider.js";
 
 import '@css/main.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
   initTabs();
-
-  if (document.querySelector('.swiper')) {
-    const swiperInstances: HTMLElement[] = qsa<HTMLElement>('.swiper', document);
-
-    for (const instance of swiperInstances) {
-      new Swiper(instance, {
-        modules: [Navigation, A11y],
-        loop: instance.dataset.sliderLoop === 'true',
-        navigation: instance.dataset.sliderNavigation === 'true' && {
-          prevEl: qs<HTMLElement>('button.swiper-button-prev', instance),
-          nextEl: qs<HTMLElement>('button.swiper-button-next', instance),
-        }
-      })
-    }
-  }
+  initModals();
+  initSliders();
 })
