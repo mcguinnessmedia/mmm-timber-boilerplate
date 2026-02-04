@@ -3,6 +3,29 @@ import {createFocusTrap, type FocusTrap} from 'focus-trap';
 
 type ModalMap = Map<string, HTMLElement>;
 
+/**
+ * Initializes
+ *
+ * @example
+ * ```html
+ * <button data-modal-open="contact">
+ *   Open
+ * </button>
+ *
+ * <div
+ *   role="dialog"
+ *   data-modal="contact"
+ *   aria-modal="true"
+ *   hidden
+ * >
+ *   <button data-modal-close>
+ *     Close
+ *   </button>
+ *
+ *   ... Content
+ * </div>
+ * ```
+ */
 export function initModals() {
   const modals: ModalMap = new Map();
 
