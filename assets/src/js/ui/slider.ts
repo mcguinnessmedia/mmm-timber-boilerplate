@@ -1,5 +1,5 @@
 import Swiper from "swiper";
-import { A11y,Navigation,Pagination,Autoplay,Keyboard } from "swiper/modules";
+import { A11y,Autoplay,Keyboard,Navigation,Pagination } from "swiper/modules";
 
 import { qs,qsa } from '../core/dom.js';
 import { dataBool,dataInt,dataStr } from "../core/data.js";
@@ -39,57 +39,57 @@ import { dataBool,dataInt,dataStr } from "../core/data.js";
 export function initSliders(): Swiper[] {
   const instances: Swiper[] = [];
 
-  qsa<HTMLElement>('.swiper').forEach(( element ) => {
+  qsa<HTMLElement>( '.swiper' ).forEach( ( element ) => {
     if ( element.dataset.swiperInitialized === 'true' ) return;
 
-    const wrapper = qs('.swiper-wrapper',element);
-    const slides = qsa('.swiper-slide',element);
+    const wrapper = qs( '.swiper-wrapper',element );
+    const slides = qsa( '.swiper-slide',element );
 
     if ( !wrapper || slides.length === 0 ) {
-      console.warn('Swiper: Invalid structure',element);
+      console.warn( 'Swiper: Invalid structure',element );
       return;
     }
 
     try {
       // Navigation
-      const navigationEnabled = dataBool(element,'sliderNavigation');
-      const prev = qs<HTMLButtonElement>('button.swiper-button-prev',element);
-      const next = qs<HTMLButtonElement>('button.swiper-button-next',element);
+      const navigationEnabled = dataBool( element,'sliderNavigation' );
+      const prev = qs<HTMLButtonElement>( 'button.swiper-button-prev',element );
+      const next = qs<HTMLButtonElement>( 'button.swiper-button-next',element );
       const hasValidNavigation = navigationEnabled && prev && next;
 
       // Pagination
-      const paginationEnabled = dataBool(element,'sliderPagination');
-      const paginationEl = qs<HTMLElement>('.swiper-pagination',element);
-      const paginationTypeRaw = dataStr(element,'sliderPaginationType','bullets');
+      const paginationEnabled = dataBool( element,'sliderPagination' );
+      const paginationEl = qs<HTMLElement>( '.swiper-pagination',element );
+      const paginationTypeRaw = dataStr( element,'sliderPaginationType','bullets' );
       const paginationType: 'bullets' | 'fraction' | 'progressbar' | 'custom' =
-        ['bullets','fraction','progressbar','custom'].includes(paginationTypeRaw)
+        ['bullets','fraction','progressbar','custom'].includes( paginationTypeRaw )
           ? paginationTypeRaw as 'bullets' | 'fraction' | 'progressbar' | 'custom'
           : 'bullets';
 
       // Autoplay
-      const autoplayEnabled = dataBool(element,'sliderAutoplay');
-      const autoplayDelay = dataInt(element,'sliderAutoplayDelay',3000);
-      const pauseOnHover = dataBool(element,'sliderPauseOnHover',true);
+      const autoplayEnabled = dataBool( element,'sliderAutoplay' );
+      const autoplayDelay = dataInt( element,'sliderAutoplayDelay',3000 );
+      const pauseOnHover = dataBool( element,'sliderPauseOnHover',true );
 
       // Slides configuration
-      const slidesPerView = dataInt(element,'sliderSlidesPerView',1);
-      const spaceBetween = dataInt(element,'sliderSpaceBetween',0);
-      const centeredSlides = dataBool(element,'sliderCentered');
+      const slidesPerView = dataInt( element,'sliderSlidesPerView',1 );
+      const spaceBetween = dataInt( element,'sliderSpaceBetween',0 );
+      const centeredSlides = dataBool( element,'sliderCentered' );
 
       // Behavior
-      const loop = dataBool(element,'sliderLoop');
-      const speed = dataInt(element,'sliderSpeed',300);
-      const keyboardEnabled = dataBool(element,'sliderKeyboard');
-      const grabCursor = dataBool(element,'sliderGrabCursor',true);
+      const loop = dataBool( element,'sliderLoop' );
+      const speed = dataInt( element,'sliderSpeed',300 );
+      const keyboardEnabled = dataBool( element,'sliderKeyboard' );
+      const grabCursor = dataBool( element,'sliderGrabCursor',true );
 
       // Only activate needed modules
       const modules = [A11y];
-      if ( hasValidNavigation ) modules.push(Navigation);
-      if ( paginationEnabled && paginationEl ) modules.push(Pagination);
-      if ( autoplayEnabled ) modules.push(Autoplay);
-      if ( keyboardEnabled ) modules.push(Keyboard);
+      if ( hasValidNavigation ) modules.push( Navigation );
+      if ( paginationEnabled && paginationEl ) modules.push( Pagination );
+      if ( autoplayEnabled ) modules.push( Autoplay );
+      if ( keyboardEnabled ) modules.push( Keyboard );
 
-      const swiper = new Swiper(element,{
+      const swiper = new Swiper( element,{
         modules,
 
         // Layout
@@ -142,14 +142,14 @@ export function initSliders(): Swiper[] {
             delete element.dataset.swiperInitialized;
           }
         }
-      });
+      } );
 
-      instances.push(swiper);
+      instances.push( swiper );
 
     } catch ( error ) {
-      console.error('Swiper: Failed to initialize',element,error);
+      console.error( 'Swiper: Failed to initialize',element,error );
     }
-  });
+  } );
 
   return instances;
 }

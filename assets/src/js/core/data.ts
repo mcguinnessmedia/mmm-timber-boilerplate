@@ -11,7 +11,7 @@ export function dataBool(
 ): boolean {
   const value = element.dataset[name];
 
-  if (value === undefined) return defaultValue;
+  if ( value === undefined ) return defaultValue;
 
   return value === '' || value === 'true' || value === '1';
 }
@@ -29,7 +29,7 @@ export function dataStr(
 ): string {
   const value = element.dataset[name];
 
-  if (value === undefined) return defaultValue;
+  if ( value === undefined ) return defaultValue;
 
   return value;
 }
@@ -47,9 +47,9 @@ export function dataInt(
 ): number {
   const value = element.dataset[name];
 
-  if (value === undefined) return defaultValue;
+  if ( value === undefined ) return defaultValue;
 
-  const parsed = parseInt(value, 10);
+  const parsed = parseInt( value,10 );
 
-  return isNaN(parsed) ? defaultValue : parsed;
+  return isNaN( parsed ) ? defaultValue : parsed;
 }

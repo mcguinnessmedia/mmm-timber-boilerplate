@@ -1,7 +1,7 @@
-import {qsa} from '../core/dom.js';
-import {createFocusTrap, type FocusTrap} from 'focus-trap';
-import {restoreFocus, storeFocus} from "../utils/focus.js";
-import {lockScroll, unlockScroll} from "../utils/scroll-lock.js";
+import { qsa } from '../core/dom.js';
+import { createFocusTrap,type FocusTrap } from 'focus-trap';
+import { restoreFocus,storeFocus } from "../utils/focus.js";
+import { lockScroll,unlockScroll } from "../utils/scroll-lock.js";
 
 /**
  * Initializes
@@ -27,17 +27,17 @@ import {lockScroll, unlockScroll} from "../utils/scroll-lock.js";
  * ```
  */
 export function initModals() {
-  const modals = new Map<string, HTMLElement>();
+  const modals = new Map<string,HTMLElement>();
 
-  qsa<HTMLElement>('[data-modal]').forEach((modal) => {
+  qsa<HTMLElement>( '[data-modal]' ).forEach( ( modal ) => {
     const id = modal.dataset.modal;
-    if (id) modals.set(id, modal);
-  })
+    if ( id ) modals.set( id,modal );
+  } )
 
-  qsa<HTMLElement>('[data-modal-open]').forEach((trigger) => {
+  qsa<HTMLElement>( '[data-modal-open]' ).forEach( ( trigger ) => {
     const id = trigger.dataset.modalOpen;
-    const modal = id ? modals.get(id) : null;
-    if (!modal) return;
+    const modal = id ? modals.get( id ) : null;
+    if ( !modal ) return;
 
     let trap: FocusTrap | null = null;
     let lastFocused: HTMLElement | null = null;
@@ -48,12 +48,12 @@ export function initModals() {
       modal.hidden = false;
       lockScroll();
 
-      trap = createFocusTrap(modal, {
+      trap = createFocusTrap( modal,{
         escapeDeactivates: false,
-      });
+      } );
       trap.activate();
 
-      document.addEventListener('keydown', onKeydown);
+      document.addEventListener( 'keydown',onKeydown );
     }
 
     const close = () => {
@@ -62,19 +62,19 @@ export function initModals() {
 
       modal.hidden = true;
       unlockScroll();
-      restoreFocus(lastFocused);
+      restoreFocus( lastFocused );
 
-      document.removeEventListener('keydown', onKeydown);
+      document.removeEventListener( 'keydown',onKeydown );
     }
 
-    const onKeydown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') close();
+    const onKeydown = ( event: KeyboardEvent ) => {
+      if ( event.key === 'Escape' ) close();
     }
 
-    trigger.addEventListener('click', open);
+    trigger.addEventListener( 'click',open );
 
-    qsa('[data-modal-close]', modal).forEach((closeBtn) => {
-      closeBtn.addEventListener('click', close);
-    });
-  })
+    qsa( '[data-modal-close]',modal ).forEach( ( closeBtn ) => {
+      closeBtn.addEventListener( 'click',close );
+    } );
+  } )
 }

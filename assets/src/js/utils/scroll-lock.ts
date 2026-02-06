@@ -2,7 +2,7 @@ let scrollY = 0;
 let lockCount = 0;
 
 export function lockScroll(): void {
-  if (lockCount == 0) {
+  if ( lockCount == 0 ) {
     scrollY = window.scrollY;
 
     document.body.style.position = 'fixed';
@@ -18,7 +18,7 @@ export function lockScroll(): void {
 export function unlockScroll(): void {
   lockCount--;
 
-  if (lockCount > 0) return;
+  if ( lockCount > 0 ) return;
 
   document.body.style.position = '';
   document.body.style.top = '';
@@ -26,5 +26,5 @@ export function unlockScroll(): void {
   document.body.style.right = '';
   document.body.style.width = '';
 
-  window.scrollTo(0, scrollY);
+  window.scrollTo( 0,scrollY );
 }

@@ -1,4 +1,4 @@
-import {qsa} from "../core/dom.js";
+import { qsa } from "../core/dom.js";
 
 /**
  * Initializes all accordions. Ensures only one `<details>` element can be open at a time.
@@ -17,14 +17,14 @@ import {qsa} from "../core/dom.js";
  * ```
  */
 export function initAccordions() {
-  qsa<HTMLElement>('[data-accordion]').forEach((accordion) => {
-    const items = qsa<HTMLDetailsElement>('details', accordion);
+  qsa<HTMLElement>( '[data-accordion]' ).forEach( ( accordion ) => {
+    const items = qsa<HTMLDetailsElement>( 'details',accordion );
 
-    items.forEach((item) => {
-      if (!item.open) return;
-      items.forEach((other) => {
-        if (other !== item) other.open = false;
-      })
-    })
-  })
+    items.forEach( ( item ) => {
+      if ( !item.open ) return;
+      items.forEach( ( other ) => {
+        if ( other !== item ) other.open = false;
+      } )
+    } )
+  } )
 }

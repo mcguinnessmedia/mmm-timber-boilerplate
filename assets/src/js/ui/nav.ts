@@ -1,6 +1,6 @@
-import {qs} from "../core/dom.js";
-import {lockScroll, unlockScroll} from "../utils/scroll-lock.js";
-import {focusFirst, restoreFocus, storeFocus, trapFocus} from "../utils/focus.js";
+import { qs } from "../core/dom.js";
+import { lockScroll,unlockScroll } from "../utils/scroll-lock.js";
+import { focusFirst,restoreFocus,storeFocus,trapFocus } from "../utils/focus.js";
 
 /**
  * Initialize the page's responsive navigation.
@@ -22,11 +22,11 @@ import {focusFirst, restoreFocus, storeFocus, trapFocus} from "../utils/focus.js
  *
  * @param root
  */
-export function initNav(root: HTMLElement = document.body) {
-  const toggle = qs<HTMLButtonElement>('[data-nav-toggle]', root);
-  const panel = qs<HTMLElement>('[data-nav-panel]', root);
+export function initNav( root: HTMLElement = document.body ) {
+  const toggle = qs<HTMLButtonElement>( '[data-nav-toggle]',root );
+  const panel = qs<HTMLElement>( '[data-nav-panel]',root );
 
-  if (!toggle || !panel) return;
+  if ( !toggle || !panel ) return;
 
   let lastFocused: HTMLElement | null = null;
 
@@ -34,34 +34,34 @@ export function initNav(root: HTMLElement = document.body) {
     lastFocused = storeFocus();
 
     panel.hidden = false;
-    toggle.setAttribute('aria-expanded', 'true');
+    toggle.setAttribute( 'aria-expanded','true' );
     lockScroll();
-    focusFirst(panel);
+    focusFirst( panel );
 
-    document.addEventListener('keydown', onKeydown);
+    document.addEventListener( 'keydown',onKeydown );
   }
 
   const close = () => {
     panel.hidden = true;
-    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute( 'aria-expanded','false' );
 
     unlockScroll();
-    restoreFocus(lastFocused);
+    restoreFocus( lastFocused );
 
-    document.removeEventListener('keydown', onKeydown);
+    document.removeEventListener( 'keydown',onKeydown );
   }
 
-  const onKeydown = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') {
+  const onKeydown = ( event: KeyboardEvent ) => {
+    if ( event.key === 'Escape' ) {
       close();
       return;
     }
 
-    trapFocus(panel, event);
+    trapFocus( panel,event );
   }
 
-  toggle.addEventListener('click', () => {
-    const expanded = toggle.getAttribute('aria-expanded') === 'true';
+  toggle.addEventListener( 'click',() => {
+    const expanded = toggle.getAttribute( 'aria-expanded' ) === 'true';
     expanded ? close() : open();
-  })
+  } )
 }

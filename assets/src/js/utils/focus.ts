@@ -1,4 +1,4 @@
-import {qsa} from "../core/dom.js";
+import { qsa } from "../core/dom.js";
 
 /**
  *
@@ -15,7 +15,7 @@ const FOCUSABLE_SELECTORS: string = [
   'embed',
   '[contenteditable]',
   '[tabindex]:not([tabindex="-1"])'
-].join(',');
+].join( ',' );
 
 /**
  * Returns all focusable elements contained in the given node.
@@ -24,16 +24,16 @@ const FOCUSABLE_SELECTORS: string = [
 export function getFocusableElements(
   container: ParentNode = document,
 ): HTMLElement[] {
-  return qsa<HTMLElement>(FOCUSABLE_SELECTORS, container)
-    .filter((el) => !el.hasAttribute('disabled'));
+  return qsa<HTMLElement>( FOCUSABLE_SELECTORS,container )
+    .filter( ( el ) => !el.hasAttribute( 'disabled' ) );
 }
 
 /**
  * Focuses the first focusable element in the container.
  * @param container The parent node
  */
-export function focusFirst(container: ParentNode): void {
-  const [first] = getFocusableElements(container);
+export function focusFirst( container: ParentNode ): void {
+  const [first] = getFocusableElements( container );
   first?.focus();
 }
 
@@ -46,19 +46,19 @@ export function trapFocus(
   container: HTMLElement,
   event: KeyboardEvent,
 ): void {
-  if (event.key !== 'Tab') return;
+  if ( event.key !== 'Tab' ) return;
 
-  const focusable = getFocusableElements(container);
-  if (focusable.length === 0) return;
+  const focusable = getFocusableElements( container );
+  if ( focusable.length === 0 ) return;
 
   const first = focusable[0] as HTMLElement;
   const last = focusable[focusable.length - 1] as HTMLElement;
   const active = document.activeElement as HTMLElement | null;
 
-  if (event.shiftKey && active === first) {
+  if ( event.shiftKey && active === first ) {
     event.preventDefault();
     last.focus();
-  } else if (!event.shiftKey && active === last) {
+  } else if ( !event.shiftKey && active === last ) {
     event.preventDefault();
     first.focus();
   }
@@ -75,6 +75,6 @@ export function storeFocus(): HTMLElement | null {
  * Restores focus to the given element.
  * @param el
  */
-export function restoreFocus(el: HTMLElement | null): void {
+export function restoreFocus( el: HTMLElement | null ): void {
   el?.focus();
 }

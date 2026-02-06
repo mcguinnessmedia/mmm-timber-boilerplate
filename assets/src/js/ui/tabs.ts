@@ -1,4 +1,4 @@
-import {qsa} from "../core/dom.js";
+import { qsa } from "../core/dom.js";
 
 /**
  * Initializes active tab components with keyboard navigation.
@@ -20,32 +20,32 @@ import {qsa} from "../core/dom.js";
  * ```
  */
 export function initTabs() {
-  qsa<HTMLElement>('[data-tabs]').forEach((root) => {
-    const tabs = qsa<HTMLButtonElement>('[role="tab"]', root);
-    const panels = qsa<HTMLElement>('[role="tabpanel"]', root);
+  qsa<HTMLElement>( '[data-tabs]' ).forEach( ( root ) => {
+    const tabs = qsa<HTMLButtonElement>( '[role="tab"]',root );
+    const panels = qsa<HTMLElement>( '[role="tabpanel"]',root );
 
     /**
      * Handler to activate a given tab
      * @param index
      */
-    const activate = (index: number) => {
-      tabs.forEach((tab, i) => {
-        tab.setAttribute('aria-selected', String(i === index));
+    const activate = ( index: number ) => {
+      tabs.forEach( ( tab,i ) => {
+        tab.setAttribute( 'aria-selected',String( i === index ) );
         tab.tabIndex = i === index ? 0 : -1;
 
         const panel = panels[i];
-        if (panel) {
+        if ( panel ) {
           panel.hidden = i !== index;
         }
-      });
+      } );
     }
 
-    tabs.forEach((tab, index) => {
-      tab.addEventListener('click', () => activate(index));
-      tab.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight') activate((index + 1) % tabs.length);
-        if (e.key === 'ArrowLeft') activate((index - 1 + tabs.length) % tabs.length);
-      });
-    })
-  });
+    tabs.forEach( ( tab,index ) => {
+      tab.addEventListener( 'click',() => activate( index ) );
+      tab.addEventListener( 'keydown',( e ) => {
+        if ( e.key === 'ArrowRight' ) activate( (index + 1) % tabs.length );
+        if ( e.key === 'ArrowLeft' ) activate( (index - 1 + tabs.length) % tabs.length );
+      } );
+    } )
+  } );
 }
