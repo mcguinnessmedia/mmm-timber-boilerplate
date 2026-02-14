@@ -4,7 +4,7 @@ import { restoreFocus,storeFocus } from "../utils/focus.js";
 import { lockScroll,unlockScroll } from "../utils/scroll-lock.js";
 
 /**
- * Initializes
+ * Initializes all modals on the page.
  *
  * @example
  * ```html
