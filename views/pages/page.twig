@@ -1,5 +1,7 @@
 {% extends 'views/layouts/base.twig' %}
 
 {% block content %}
-  <h1>Hello world!</h1>
+  {% for component in post.components %}
+    {% include component.view with component %}
+  {% endfor %}
 {% endblock %}
