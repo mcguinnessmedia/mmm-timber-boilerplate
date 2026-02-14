@@ -22,7 +22,11 @@ class MediaSelectorPartial extends BasePartial
       ])
       ->addImage('image', ['required' => true])->conditional('type', '==', 'image')
       ->addGallery('gallery')->conditional('type', '==', 'slider')
-      ->addTextarea('embed', ['required' => true])->conditional('type', '==', 'embed')
+      ->addOembed('embed', [
+        'label' => 'Video URL',
+        'instructions' => 'Paste a YouTube, Vimeo, or other oEmbed-compatible URL',
+        'required' => true
+      ])->conditional('type', '==', 'embed')
       ->addRepeater('upload')->conditional('type', '==', 'upload')
       ->addFile('file', [
         'label' => 'Video File',
