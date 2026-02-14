@@ -11,10 +11,6 @@ class FlexibleContentRegistryService
 
   private array $layoutRegistry = [];
 
-  private function init(): void {
-    // Intentionally blank - no constructor needed currently
-  }
-
   /**
    * Register a layout instance.
    * @param BaseLayout $layout
@@ -56,5 +52,10 @@ class FlexibleContentRegistryService
     }
 
     return $this->layoutRegistry[$layoutName]->getView();
+  }
+
+  private function init(): void
+  {
+    // Intentionally blank - no constructor needed currently
   }
 }

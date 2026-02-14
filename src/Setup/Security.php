@@ -9,6 +9,20 @@ class Security
 {
   use Singleton;
 
+  /**
+   * Add security headers to harden the WordPress instance.
+   * @return void
+   */
+  public function addSecurityHeaders(): void
+  {
+    if (!is_admin()) {
+      header('X-Content-Type-Options: nosniff');
+      header('X-Frame-Options: SAMEORIGIN');
+      header('X-XSS-Protection: 1; mode=block');
+      header('Referrer-Policy: no-referrer-when-cross-origin');
+    }
+  }
+
   private function init(): void
   {
     remove_action('wp_head', 'wp_generator');
@@ -23,19 +37,5 @@ class Security
     }
 
     add_action('send_headers', [$this, 'addSecurityHeaders']);
-  }
-
-  /**
-   * Add security headers to harden the WordPress instance.
-   * @return void
-   */
-  public function addSecurityHeaders(): void
-  {
-    if (!is_admin()) {
-      header('X-Content-Type-Options: nosniff');
-      header('X-Frame-Options: SAMEORIGIN');
-      header('X-XSS-Protection: 1; mode=block');
-      header('Referrer-Policy: no-referrer-when-cross-origin');
-    }
   }
 }

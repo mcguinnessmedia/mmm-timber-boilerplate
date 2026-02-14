@@ -2,8 +2,8 @@
 
 namespace MMM\FieldGroups;
 
-use MMM\Traits\HasFlexibleContent;
 use MMM\FieldGroups\FlexibleContent\{TwoColumnLayout};
+use MMM\Traits\HasFlexibleContent;
 
 class PageContent extends BaseFieldGroup
 {
@@ -29,10 +29,10 @@ class PageContent extends BaseFieldGroup
   protected function addFields(): void
   {
     $flexibleContent = $this->fields->addFlexibleContent('components',
-     [
-       'label' => __('Components', 'mcguinnessmedia'),
-       'button_label' => __('Add Component', 'mcguinnessmedia'),
-     ]);
+      [
+        'label' => __('Components', 'mcguinnessmedia'),
+        'button_label' => __('Add Component', 'mcguinnessmedia'),
+      ]);
 
     foreach ($this->layouts as $layout) {
       $builder = $layout->build();

@@ -11,21 +11,11 @@ abstract class BaseFieldGroup
   protected FieldsBuilder $fields;
 
   /**
-   * Creates a key for this field group
-   * @return string
-   */
-  public function getKey(): string
-  {
-    $className = (new ReflectionClass($this))->getShortName();
-    return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $className));
-  }
-
-  /**
    *
    * @return void
    * @throws FieldNameCollisionException
    */
-  public function register():void
+  public function register(): void
   {
     if (function_exists('acf_add_local_field_group')) {
       acf_add_local_field_group($this->build()->build());
@@ -45,6 +35,16 @@ abstract class BaseFieldGroup
     $this->setLocation();
 
     return $this->fields;
+  }
+
+  /**
+   * Creates a key for this field group
+   * @return string
+   */
+  public function getKey(): string
+  {
+    $className = (new ReflectionClass($this))->getShortName();
+    return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $className));
   }
 
   /**

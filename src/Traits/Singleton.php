@@ -8,6 +8,13 @@ trait Singleton
 {
   private static ?self $instance = null;
 
+  final private function __construct()
+  {
+    $this->init();
+  }
+
+  abstract private function init(): void;
+
   public static function getInstance(): self
   {
     if (null === self::$instance) {
@@ -16,23 +23,21 @@ trait Singleton
     return self::$instance;
   }
 
-  final private function __construct() {
-    $this->init();
+  /**
+   * @return void
+   * @throws Exception
+   */
+  final public function __wakeup(): void
+  {
+    throw new Exception("Cannot unserialize singleton");
   }
 
   /**
    * Initialize the theme class. Used to protect the constructor.
    * @return void
    */
-  abstract private function init(): void;
 
-  final protected function __clone(): void {}
-
-  /**
-   * @return void
-   * @throws Exception
-   */
-  final protected function __wakeup(): void {
-    throw new Exception("Cannot unserialize singleton");
+  final protected function __clone(): void
+  {
   }
 }

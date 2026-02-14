@@ -46,39 +46,6 @@ class ViteService
   private bool $manifestLoaded = false;
   private ?string $buildVersion = null;
 
-  private function init(): void
-  {
-    $this->distPath = get_template_directory() . '/assets/dist';
-    $this->distUri = get_template_directory_uri() . '/assets/dist';
-    $this->loadManifest();
-  }
-
-  private function loadManifest(): void
-  {
-    $manifestPath = $this->distPath . '/.vite/manifest.json';
-
-    if (!file_exists($manifestPath)) {
-      add_action('admin_notices', function () {
-        echo '<div class="notice notice-error"><p>'
-          . 'Vite manifest not found. Run <code>npm run build</code>.'
-          . '</p></div>';
-      });
-      return;
-    }
-
-    $this->buildVersion = (string) filemtime($manifestPath);
-
-    $manifestContent = file_get_contents($manifestPath);
-    $this->manifest = json_decode($manifestContent, true);
-
-    if (json_last_error() !== JSON_ERROR_NONE) {
-      error_log('Failed to parse Vite manifest: ' . json_last_error_msg());
-      return;
-    }
-
-    $this->manifestLoaded = true;
-  }
-
   public function enqueue(string $handle, string $entry, array $dependencies = []): void
   {
     if (!$this->manifestLoaded) {
@@ -110,27 +77,6 @@ class ViteService
   }
 
   /**
-   * Find a manifest entry by its name.
-   *
-   * @param string $name The entry name from vite.config.js input
-   * @return array|null The manifest entry or null if not found
-   */
-  private function findManifestEntry(string $name): ?array
-  {
-    if (!$this->manifest) {
-      return null;
-    }
-
-    foreach ($this->manifest as $entry) {
-      if (isset($entry['name']) && $entry['name'] === $name) {
-        return $entry;
-      }
-    }
-
-    return null;
-  }
-
-  /**
    * Get the URL for a Vite asset by its entry name.
    *
    * Entry name corresponds to the "name" field in Vite's manifest.json,
@@ -154,6 +100,27 @@ class ViteService
   }
 
   /**
+   * Find a manifest entry by its name.
+   *
+   * @param string $name The entry name from vite.config.js input
+   * @return array|null The manifest entry or null if not found
+   */
+  private function findManifestEntry(string $name): ?array
+  {
+    if (!$this->manifest) {
+      return null;
+    }
+
+    foreach ($this->manifest as $entry) {
+      if (isset($entry['name']) && $entry['name'] === $name) {
+        return $entry;
+      }
+    }
+
+    return null;
+  }
+
+  /**
    * Get CSS URLs associated with a Vite entry.
    *
    * @param string $entry The entry name (e.g., 'main')
@@ -173,5 +140,38 @@ class ViteService
     }
 
     return $cssFiles;
+  }
+
+  private function init(): void
+  {
+    $this->distPath = get_template_directory() . '/assets/dist';
+    $this->distUri = get_template_directory_uri() . '/assets/dist';
+    $this->loadManifest();
+  }
+
+  private function loadManifest(): void
+  {
+    $manifestPath = $this->distPath . '/.vite/manifest.json';
+
+    if (!file_exists($manifestPath)) {
+      add_action('admin_notices', function () {
+        echo '<div class="notice notice-error"><p>'
+          . 'Vite manifest not found. Run <code>npm run build</code>.'
+          . '</p></div>';
+      });
+      return;
+    }
+
+    $this->buildVersion = (string)filemtime($manifestPath);
+
+    $manifestContent = file_get_contents($manifestPath);
+    $this->manifest = json_decode($manifestContent, true);
+
+    if (json_last_error() !== JSON_ERROR_NONE) {
+      error_log('Failed to parse Vite manifest: ' . json_last_error_msg());
+      return;
+    }
+
+    $this->manifestLoaded = true;
   }
 }

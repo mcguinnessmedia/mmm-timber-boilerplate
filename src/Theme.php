@@ -2,12 +2,12 @@
 
 namespace MMM;
 
-use Timber\{Timber, Site};
+use MMM\FieldGroups\{PageContent, SeoFields};
 use MMM\Models\Post;
-use MMM\FieldGroups\{SeoFields, PageContent};
-use MMM\Setup\{Security};
 use MMM\Services\{FieldGroupRegistryService, TwigFilterService, ViteService};
+use MMM\Setup\{Security};
 use MMM\Traits\Singleton;
+use Timber\{Site, Timber};
 
 class Theme
 {
@@ -16,7 +16,47 @@ class Theme
   private Security $security;
   private TwigFilterService $twigFilterService;
 
-  private function init():void
+  /**
+   * Initialize key theme supports and nav menus.
+   * @return void
+   */
+  public function setup(): void
+  {
+    add_theme_support('post-thumbnails');
+
+    register_nav_menus([
+      'primary' => __('Primary Menu'),
+    ]);
+  }
+
+  /**
+   * Add models to the Timber classmap.
+   * For use in the `timber/post/classmap` hook.
+   * @param array $classmap
+   * @return array
+   */
+  public function classmap(array $classmap): array
+  {
+    $classmap['post'] = Post::class;
+    $classmap['page'] = Post::class;
+
+    return $classmap;
+  }
+
+  /**
+   * Add site data to Timber context.
+   * @param array $context
+   * @return array
+   */
+  public function addToContext(array $context): array
+  {
+    $context['site'] = new Site();
+    $context['menu'] = Timber::get_menu('primary');
+
+    return $context;
+  }
+
+  private function init(): void
   {
     // Set Timber directory
     Timber::$dirname = ['views'];
@@ -52,33 +92,6 @@ class Theme
   }
 
   /**
-   * Initialize key theme supports and nav menus.
-   * @return void
-   */
-  public function setup(): void
-  {
-    add_theme_support('post-thumbnails');
-
-    register_nav_menus([
-      'primary' => __('Primary Menu'),
-    ]);
-  }
-
-  /**
-   * Add models to the Timber classmap.
-   * For use in the `timber/post/classmap` hook.
-   * @param array $classmap
-   * @return array
-   */
-  public function classmap(array $classmap): array
-  {
-    $classmap['post'] = Post::class;
-    $classmap['page'] = Post::class;
-
-    return $classmap;
-  }
-
-  /**
    * Register ACF field groups using the FieldGroupRegistryService.
    * @return void
    */
@@ -91,18 +104,5 @@ class Theme
     $fieldsRegistry->register(PageContent::class);
 
     $fieldsRegistry->init();
-  }
-
-  /**
-   * Add site data to Timber context.
-   * @param array $context
-   * @return array
-   */
-  public function addToContext(array $context): array
-  {
-    $context['site'] = new Site();
-    $context['menu'] = Timber::get_menu('primary');
-
-    return $context;
   }
 }

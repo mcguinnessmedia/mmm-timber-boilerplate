@@ -2,21 +2,11 @@
 
 namespace MMM\Models;
 
-use Timber\Post as TimberPost;
 use MMM\Services\FlexibleContentRegistryService;
+use Timber\Post as TimberPost;
 
 class Post extends TimberPost
 {
-  /**
-   * Get ACF fields for the post.
-   * @return array|null
-   */
-  public function acf(): ?array
-  {
-    $fields = get_fields($this->ID);
-    return $fields ?: null;
-  }
-
   /**
    * Get components with their view paths.
    * @return array
@@ -30,6 +20,16 @@ class Post extends TimberPost
       $component['view'] = $service->getViewForLayout($component['acf_fc_layout']);
       return $component;
     }, $components);
+  }
+
+  /**
+   * Get ACF fields for the post.
+   * @return array|null
+   */
+  public function acf(): ?array
+  {
+    $fields = get_fields($this->ID);
+    return $fields ?: null;
   }
 
   public function getLayoutView(string $layoutName): ?string

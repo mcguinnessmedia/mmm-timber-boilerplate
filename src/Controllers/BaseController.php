@@ -3,7 +3,7 @@
 namespace MMM\Controllers;
 
 use MMM\Services\SeoDataService;
-use Timber\{Timber, Post};
+use Timber\{Post, Timber};
 
 abstract class BaseController
 {
@@ -16,8 +16,6 @@ abstract class BaseController
     $this->seoService = new SeoDataService();
   }
 
-  abstract public function render(): void;
-
   protected function renderView(string $template, array $data = []): void
   {
     if (isset($data['post']) && $data['post'] instanceof Post) {
@@ -29,4 +27,6 @@ abstract class BaseController
       array_merge($this->context, $data)
     );
   }
+
+  abstract public function render(): void;
 }

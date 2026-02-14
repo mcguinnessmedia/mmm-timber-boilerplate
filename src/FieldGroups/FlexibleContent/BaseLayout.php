@@ -2,20 +2,12 @@
 
 namespace MMM\FieldGroups\FlexibleContent;
 
-use StoutLogic\AcfBuilder\FieldsBuilder;
 use StoutLogic\AcfBuilder\FieldNameCollisionException;
+use StoutLogic\AcfBuilder\FieldsBuilder;
 
-abstract class BaseLayout {
+abstract class BaseLayout
+{
   protected FieldsBuilder $fields;
-
-  abstract public function getName(): string;
-  abstract protected function getLabel(): string;
-
-  /**
-   * @return void
-   * @throws FieldNameCollisionException
-   */
-  abstract protected function addFields(): void;
 
   /**
    * @return FieldsBuilder
@@ -27,6 +19,14 @@ abstract class BaseLayout {
     $this->addFields();
     return $this->fields;
   }
+
+  abstract public function getName(): string;
+
+  /**
+   * @return void
+   * @throws FieldNameCollisionException
+   */
+  abstract protected function addFields(): void;
 
   public function getView(): string
   {
@@ -43,6 +43,8 @@ abstract class BaseLayout {
       'max' => $this->getMax(),
     ];
   }
+
+  abstract protected function getLabel(): string;
 
   protected function getDisplay(): string
   {

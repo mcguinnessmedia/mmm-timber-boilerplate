@@ -2,9 +2,9 @@
 
 namespace MMM\Services;
 
+use InvalidArgumentException;
 use MMM\FieldGroups\BaseFieldGroup;
 use MMM\Traits\Singleton;
-use InvalidArgumentException;
 
 class FieldGroupRegistryService
 {
@@ -12,7 +12,8 @@ class FieldGroupRegistryService
 
   private array $fieldGroups = [];
 
-  public function init(): void {
+  public function init(): void
+  {
     add_action('acf/init', [$this, 'registerAll']);
   }
 
@@ -20,7 +21,8 @@ class FieldGroupRegistryService
    * Add all fields registered in the registry to WordPress.
    * @return void
    */
-  public function registerAll(): void {
+  public function registerAll(): void
+  {
     foreach ($this->fieldGroups as $fieldGroupClass) {
       $fieldGroup = new $fieldGroupClass();
       $fieldGroup->register();

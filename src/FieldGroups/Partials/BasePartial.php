@@ -2,10 +2,11 @@
 
 namespace MMM\FieldGroups\Partials;
 
-use StoutLogic\AcfBuilder\FieldsBuilder;
 use StoutLogic\AcfBuilder\FieldNameCollisionException;
+use StoutLogic\AcfBuilder\FieldsBuilder;
 
-abstract class BasePartial {
+abstract class BasePartial
+{
   /**
    * @return FieldsBuilder
    * @throws FieldNameCollisionException
