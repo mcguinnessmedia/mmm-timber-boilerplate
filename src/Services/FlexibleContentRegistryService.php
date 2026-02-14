@@ -55,6 +55,6 @@ class FlexibleContentRegistryService
       return null;
     }
 
-    return $this->layoutRegistry[$layoutName];
+    return $this->layoutRegistry[$layoutName]->getView();
   }
 }
