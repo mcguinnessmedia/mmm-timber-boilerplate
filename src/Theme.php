@@ -5,15 +5,14 @@ namespace MMM;
 use Timber\{Timber, Site};
 use MMM\Models\Post;
 use MMM\FieldGroups\{SeoFields, PageContent};
-use MMM\Setup\{Assets, Security};
-use MMM\Services\{FieldGroupRegistryService, TwigFilterService};
+use MMM\Setup\{Security};
+use MMM\Services\{FieldGroupRegistryService, TwigFilterService, ViteService};
 use MMM\Traits\Singleton;
 
 class Theme
 {
   use Singleton;
 
-  private Assets $assets;
   private Security $security;
   private TwigFilterService $twigFilterService;
 
@@ -22,11 +21,13 @@ class Theme
     // Set Timber directory
     Timber::$dirname = ['views'];
 
-    // Initialize assets
-    $this->assets = new Assets();
+    // Enqueue assets
+    $this->enqueue();
 
     // Add WordPress security
     $this->security = Security::getInstance();
+
+    // Add extra Twig filters
     $this->twigFilterService = TwigFilterService::getInstance();
 
     // Register hooks
@@ -38,6 +39,17 @@ class Theme
     add_filter('timber/post/classmap', [$this, 'classmap']);
 
     $this->registerFieldGroups();
+  }
+
+  /**
+   * Enqueue assets using the ViteService.
+   *
+   * @return void
+   */
+  function enqueue(): void
+  {
+    $vite = ViteService::getInstance();
+    $vite->enqueue('mmm-main', 'main');
   }
 
   /**

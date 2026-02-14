@@ -4,6 +4,38 @@ namespace MMM\Services;
 
 use MMM\Traits\Singleton;
 
+/**
+ * ViteService - Manages Vite-built assets for WordPress themes.
+ *
+ * This service reads Vite's manifest.json file and enqueues JavaScript and CSS assets
+ * with proper cache busting and module type attributes.
+ *
+ * ## Expected Manifest Structure
+ *
+ * Vite generates a manifest.json file with this structure:
+ * ```json
+ * {
+ *   "assets/src/js/main.ts": {
+ *     "file": "main.min.js",
+ *     "name": "main",
+ *     "src": "assets/src/js/main.ts",
+ *     "isEntry": true,
+ *     "css": ["main.min.css"]
+ *   }
+ * }
+ * ```
+ *
+ * The service uses the "name" field (derived from input names in vite.config.js)
+ * to look up assets. For example:
+ *
+ * ```php
+ * // vite.config.js has: input: { main: 'assets/src/js/main.ts' }
+ * // Call with the input name:
+ * $vite->enqueue('my-handle', 'main');
+ * ```
+ *
+ * @package MMM\Services
+ */
 class ViteService
 {
   use Singleton;
@@ -77,49 +109,59 @@ class ViteService
     });
   }
 
-  private function asset(string $entry): ?string
+  /**
+   * Find a manifest entry by its name.
+   *
+   * @param string $name The entry name from vite.config.js input
+   * @return array|null The manifest entry or null if not found
+   */
+  private function findManifestEntry(string $name): ?array
   {
     if (!$this->manifest) {
-      error_log('Vite manifest not loaded');
       return null;
     }
 
-    // Try direct lookup first (for full paths)
-    if (isset($this->manifest[$entry])) {
-      return $this->distUri . '/' . $this->manifest[$entry]['file'];
-    }
-
-    // Search by name field
-    foreach ($this->manifest as $manifestEntry) {
-      if (isset($manifestEntry['name']) && $manifestEntry['name'] === $entry) {
-        return $this->distUri . '/' . $manifestEntry['file'];
+    foreach ($this->manifest as $entry) {
+      if (isset($entry['name']) && $entry['name'] === $name) {
+        return $entry;
       }
     }
 
-    error_log('Vite asset not found in manifest: ' . $entry);
     return null;
   }
 
+  /**
+   * Get the URL for a Vite asset by its entry name.
+   *
+   * Entry name corresponds to the "name" field in Vite's manifest.json,
+   * which is derived from the input name in vite.config.js.
+   *
+   * Example: enqueue('handle', 'main') looks for manifest entry with "name": "main"
+   *
+   * @param string $entry The entry name (e.g., 'main')
+   * @return string|null The full URL to the asset, or null if not found
+   */
+  private function asset(string $entry): ?string
+  {
+    $manifestEntry = $this->findManifestEntry($entry);
+
+    if (!$manifestEntry) {
+      error_log('Vite asset not found in manifest: ' . $entry);
+      return null;
+    }
+
+    return $this->distUri . '/' . $manifestEntry['file'];
+  }
+
+  /**
+   * Get CSS URLs associated with a Vite entry.
+   *
+   * @param string $entry The entry name (e.g., 'main')
+   * @return array Array of CSS file URLs
+   */
   private function css(string $entry): array
   {
-    if (!$this->manifest) {
-      return [];
-    }
-
-    $manifestEntry = null;
-
-    // Try direct lookup first (for full paths)
-    if (isset($this->manifest[$entry])) {
-      $manifestEntry = $this->manifest[$entry];
-    } else {
-      // Search by name field
-      foreach ($this->manifest as $item) {
-        if (isset($item['name']) && $item['name'] === $entry) {
-          $manifestEntry = $item;
-          break;
-        }
-      }
-    }
+    $manifestEntry = $this->findManifestEntry($entry);
 
     if (!$manifestEntry || !isset($manifestEntry['css'])) {
       return [];
