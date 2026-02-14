@@ -25,6 +25,10 @@ class Security
     add_action('send_headers', [$this, 'addSecurityHeaders']);
   }
 
+  /**
+   * Add security headers to harden the WordPress instance.
+   * @return void
+   */
   public function addSecurityHeaders(): void
   {
     if (!is_admin()) {

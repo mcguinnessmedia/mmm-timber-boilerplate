@@ -43,7 +43,6 @@ class Theme
 
   /**
    * Enqueue assets using the ViteService.
-   *
    * @return void
    */
   function enqueue(): void
@@ -53,7 +52,7 @@ class Theme
   }
 
   /**
-   * Initialize key theme supports and nav menus
+   * Initialize key theme supports and nav menus.
    * @return void
    */
   public function setup(): void
@@ -65,6 +64,12 @@ class Theme
     ]);
   }
 
+  /**
+   * Add models to the Timber classmap.
+   * For use in the `timber/post/classmap` hook.
+   * @param array $classmap
+   * @return array
+   */
   public function classmap(array $classmap): array
   {
     $classmap['post'] = Post::class;
@@ -73,6 +78,10 @@ class Theme
     return $classmap;
   }
 
+  /**
+   * Register ACF field groups using the FieldGroupRegistryService.
+   * @return void
+   */
   private function registerFieldGroups(): void
   {
     $fieldsRegistry = FieldGroupRegistryService::getInstance();
@@ -85,7 +94,7 @@ class Theme
   }
 
   /**
-   * Add site data to Timber context
+   * Add site data to Timber context.
    * @param array $context
    * @return array
    */

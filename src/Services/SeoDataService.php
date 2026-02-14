@@ -7,7 +7,7 @@ use Timber\Post;
 class SeoDataService
 {
   /**
-   * Get SEO data for a given post
+   * Get SEO data for a given post.
    * @param Post $post
    * @return array
    */
@@ -40,7 +40,7 @@ class SeoDataService
   }
 
   /**
-   * Safely get a value from an array using dot notation
+   * Safely get a value from an array using dot notation.
    * @param array $data
    * @param string $key
    * @param mixed $default
@@ -67,7 +67,7 @@ class SeoDataService
   }
 
   /**
-   * Create a robots directive
+   * Create a robots directive.
    * @param array $acf
    * @return array
    */

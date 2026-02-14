@@ -16,6 +16,10 @@ class FieldGroupRegistryService
     add_action('acf/init', [$this, 'registerAll']);
   }
 
+  /**
+   * Add all fields registered in the registry to WordPress.
+   * @return void
+   */
   public function registerAll(): void {
     foreach ($this->fieldGroups as $fieldGroupClass) {
       $fieldGroup = new $fieldGroupClass();
@@ -23,6 +27,11 @@ class FieldGroupRegistryService
     }
   }
 
+  /**
+   * Register the given field in the registry.
+   * @param string $fieldGroupClass The class to register. Must extend BaseFieldGroup.
+   * @return void
+   */
   public function register(string $fieldGroupClass): void
   {
     if (!is_subclass_of($fieldGroupClass, BaseFieldGroup::class)) {

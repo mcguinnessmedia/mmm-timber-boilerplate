@@ -20,6 +20,10 @@ trait Singleton
     $this->init();
   }
 
+  /**
+   * Initialize the theme class. Used to protect the constructor.
+   * @return void
+   */
   abstract private function init(): void;
 
   final protected function __clone(): void {}
