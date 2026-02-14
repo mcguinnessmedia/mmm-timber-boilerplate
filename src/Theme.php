@@ -4,8 +4,8 @@ namespace MMM;
 
 use MMM\FieldGroups\{PageContent, SeoFields};
 use MMM\Models\Post;
-use MMM\Services\{FieldGroupRegistryService, TwigFilterService, ViteService};
-use MMM\Setup\{Security};
+use MMM\Services\{FieldGroupRegistryService, PostTypeRegistryService, TwigFilterService, ViteService};
+use MMM\Setup\Security;
 use MMM\Traits\Singleton;
 use Timber\{Site, Timber};
 
@@ -78,6 +78,7 @@ class Theme
     add_filter('timber/context', [$this, 'addToContext']);
     add_filter('timber/post/classmap', [$this, 'classmap']);
 
+    $this->registerPostTypes();
     $this->registerFieldGroups();
   }
 
@@ -104,5 +105,15 @@ class Theme
     $fieldsRegistry->register(PageContent::class);
 
     $fieldsRegistry->init();
+  }
+
+  /**
+   * Register post types using the PostTypeRegistryService.
+   * @return void
+   */
+  private function registerPostTypes(): void {
+    $postTypeRegistry = PostTypeRegistryService::getInstance();
+
+    // $postTypeRegistry->register(BasePostType::class);
   }
 }
