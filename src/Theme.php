@@ -80,6 +80,7 @@ class Theme
   public function addToContext(array $context): array
   {
     $context['site'] = new Site();
+    $context['menu'] = Timber::get_menu('primary');
 
     return $context;
   }
