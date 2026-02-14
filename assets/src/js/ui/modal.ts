@@ -48,10 +48,14 @@ export function initModals() {
       modal.hidden = false;
       lockScroll();
 
-      trap = createFocusTrap( modal,{
-        escapeDeactivates: false,
-      } );
-      trap.activate();
+      try {
+        trap = createFocusTrap( modal, {
+          escapeDeactivates: false,
+        } );
+        trap.activate();
+      } catch (error) {
+        console.error('Focus trap failed for modal:', error)
+      }
 
       document.addEventListener( 'keydown',onKeydown );
     }

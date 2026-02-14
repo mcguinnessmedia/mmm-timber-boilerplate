@@ -7,13 +7,19 @@ import { initAccordions } from './ui/accordion.js';
 import '@css/main.scss';
 
 document.addEventListener( 'DOMContentLoaded', () => {
-  try {
-    initNav();
-    initTabs();
-    initModals();
-    initSliders();
-    initAccordions();
-  } catch ( error ) {
-    console.error( 'UI initialization failed:', error );
-  }
+  const modules: { name: string, fn: () => any }[] = [
+    { name: 'nav', fn: initNav },
+    { name: 'tabs', fn: initTabs },
+    { name: 'modals', fn: initModals },
+    { name: 'sliders', fn: initSliders },
+    { name: 'accordions', fn: initAccordions },
+  ];
+
+  modules.forEach( ( { name, fn } ) => {
+    try {
+      fn();
+    } catch ( error ) {
+      console.error( `Failed to initialize ${name}:`, error );
+    }
+  } );
 } );
