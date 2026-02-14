@@ -21,7 +21,7 @@ class TwoColumnLayout extends BaseLayout {
     $this->fields
       ->addRadio('alignment', [
         'label' => __('Alignment', 'mcguinnessmedia'),
-        'options' => [
+        'choices' => [
           'left' => __('Left', 'mcguinnessmedia'),
           'right' => __('Right', 'mcguinnessmedia'),
         ]]
