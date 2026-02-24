@@ -4,7 +4,11 @@ namespace MMM;
 
 use MMM\FieldGroups\{PageContent, SeoFields};
 use MMM\Models\Post;
-use MMM\Services\{FieldGroupRegistryService, PostTypeRegistryService, TwigFilterService, ViteService};
+use MMM\Services\{FieldGroupRegistryService,
+  LaunchChecklistService,
+  PostTypeRegistryService,
+  TwigFilterService,
+  ViteService};
 use MMM\Setup\Security;
 use MMM\Traits\Singleton;
 use Timber\{Site, Timber};
@@ -22,11 +26,11 @@ class Theme
    */
   public function setup(): void
   {
-    add_theme_support('post-thumbnails');
+    add_theme_support( 'post-thumbnails' );
 
-    register_nav_menus([
-      'primary' => __('Primary Menu'),
-    ]);
+    register_nav_menus( [
+      'primary' => __( 'Primary Menu' ),
+    ] );
   }
 
   /**
@@ -35,7 +39,7 @@ class Theme
    * @param array $classmap
    * @return array
    */
-  public function classmap(array $classmap): array
+  public function classmap( array $classmap ): array
   {
     $classmap['post'] = Post::class;
     $classmap['page'] = Post::class;
@@ -48,10 +52,10 @@ class Theme
    * @param array $context
    * @return array
    */
-  public function addToContext(array $context): array
+  public function addToContext( array $context ): array
   {
     $context['site'] = new Site();
-    $context['menu'] = Timber::get_menu('primary');
+    $context['menu'] = Timber::get_menu( 'primary' );
 
     return $context;
   }
@@ -59,24 +63,27 @@ class Theme
   private function init(): void
   {
     // Set Timber directory
-    Timber::$dirname = ['views'];
+    Timber::$dirname = [ 'views' ];
 
     // Enqueue assets
     $this->enqueue();
 
     // Add WordPress security
-    $this->security = Security::getInstance();
+    Security::getInstance();
 
     // Add extra Twig filters
-    $this->twigFilterService = TwigFilterService::getInstance();
+    TwigFilterService::getInstance();
+
+    // Add launch checklist
+    LaunchChecklistService::getInstance();
 
     // Register hooks
-    add_action('after_setup_theme', [$this, 'setup']);
-    add_filter('use_block_editor_for_post_type', '__return_false');
+    add_action( 'after_setup_theme', [ $this, 'setup' ] );
+    add_filter( 'use_block_editor_for_post_type', '__return_false' );
 
     // Register Timber necessities
-    add_filter('timber/context', [$this, 'addToContext']);
-    add_filter('timber/post/classmap', [$this, 'classmap']);
+    add_filter( 'timber/context', [ $this, 'addToContext' ] );
+    add_filter( 'timber/post/classmap', [ $this, 'classmap' ] );
 
     $this->registerPostTypes();
     $this->registerFieldGroups();
@@ -89,7 +96,7 @@ class Theme
   function enqueue(): void
   {
     $vite = ViteService::getInstance();
-    $vite->enqueue('mmm-main', 'main');
+    $vite->enqueue( 'mmm-main', 'main' );
   }
 
   /**
@@ -101,8 +108,8 @@ class Theme
     $fieldsRegistry = FieldGroupRegistryService::getInstance();
 
     // Add field groups here
-    $fieldsRegistry->register(SeoFields::class);
-    $fieldsRegistry->register(PageContent::class);
+    $fieldsRegistry->register( SeoFields::class );
+    $fieldsRegistry->register( PageContent::class );
 
     $fieldsRegistry->init();
   }
@@ -111,7 +118,8 @@ class Theme
    * Register post types using the PostTypeRegistryService.
    * @return void
    */
-  private function registerPostTypes(): void {
+  private function registerPostTypes(): void
+  {
     $postTypeRegistry = PostTypeRegistryService::getInstance();
 
     // $postTypeRegistry->register(BasePostType::class);
