@@ -18,8 +18,7 @@ use MMM\Traits\Singleton;
  * LaunchChecklistService::getInstance();
  * ```
  */
-class LaunchChecklistService
-{
+class LaunchChecklistService {
   use Singleton;
 
   private const OPTION_KEY = 'mmm_launch_checklist';
@@ -102,21 +101,22 @@ class LaunchChecklistService
     ];
   }
 
-  // -------------------------------------------------------------------------
-  // Bootstrap
-  // -------------------------------------------------------------------------
-
   private function init(): void
   {
     add_action( 'wp_dashboard_setup', [ $this, 'registerWidget' ] );
     add_action( 'admin_enqueue_scripts', [ $this, 'enqueueAssets' ] );
     add_action( 'wp_ajax_' . self::AJAX_ACTION, [ $this, 'handleAjaxSave' ] );
+
+    add_action( 'wp_dashboard_setup', [ $this, 'removeDashboardWidgets' ] );
+    add_action('user_register', function (int $userId) {
+      update_user_meta($userId, 'show_welcome_panel', 0);
+    });
   }
 
-  // -------------------------------------------------------------------------
-  // Widget registration
-  // -------------------------------------------------------------------------
-
+  /**
+   * Register the checklist dashboard widget
+   * @return void
+   */
   public function registerWidget(): void
   {
     wp_add_dashboard_widget(
@@ -126,10 +126,20 @@ class LaunchChecklistService
     );
   }
 
-  // -------------------------------------------------------------------------
-  // Asset: inline CSS + JS scoped to the dashboard page
-  // -------------------------------------------------------------------------
+  public function removeDashboardWidgets(): void
+  {
+    remove_meta_box( 'dashboard_quick_press', 'dashboard', 'side' );
+    remove_meta_box( 'dashboard_primary', 'dashboard', 'side' );
+    remove_meta_box( 'dashboard_right_now', 'dashboard', 'normal' );
+    remove_meta_box( 'dashboard_activity', 'dashboard', 'normal' );
+    remove_meta_box( 'dashboard_php_nags', 'dashboard', 'normal' );
+  }
 
+  /**
+   * Enqueues inline styles and scripts on the admin panel, index only
+   * @param string $hookSuffix
+   * @return void
+   */
   public function enqueueAssets( string $hookSuffix ): void
   {
     if ( $hookSuffix !== 'index.php' ) {
@@ -140,10 +150,10 @@ class LaunchChecklistService
     wp_add_inline_script( 'jquery', $this->getInlineScript() );
   }
 
-  // -------------------------------------------------------------------------
-  // Render
-  // -------------------------------------------------------------------------
-
+  /**
+   * Renders the dashboard widget
+   * @return void
+   */
   public function renderWidget(): void
   {
     $saved = $this->getSavedState();
@@ -292,10 +302,10 @@ class LaunchChecklistService
     return [ 'checked' => $checked, 'total' => $total ];
   }
 
-  // -------------------------------------------------------------------------
-  // Inline styles
-  // -------------------------------------------------------------------------
-
+  /**
+   * Gets inline styles for the widget
+   * @return string The inline styles
+   */
   private function getInlineStyles(): string
   {
     return <<<CSS
@@ -445,10 +455,10 @@ class LaunchChecklistService
     CSS;
   }
 
-  // -------------------------------------------------------------------------
-  // Inline script
-  // -------------------------------------------------------------------------
-
+  /**
+   * Gets the inline script for the widget
+   * @return string The inline script
+   */
   private function getInlineScript(): string
   {
     $ajaxUrl = esc_js( admin_url( 'admin-ajax.php' ) );
