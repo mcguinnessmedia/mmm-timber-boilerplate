@@ -2,6 +2,6 @@
 
 {% block content %}
   {% for component in post.components %}
-    {% include component.view with component %}
+    {% include component.view with { fields: component.fields, section: component } only %}
   {% endfor %}
 {% endblock %}

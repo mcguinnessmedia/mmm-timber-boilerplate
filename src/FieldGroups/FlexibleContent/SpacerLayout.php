@@ -16,6 +16,7 @@ class SpacerLayout extends BaseLayout {
   protected function addFields(): void
   {
     $this->fields
+      ->addTab('Spacer Settings')
       ->addSelect( 'height', [
         'choices' => [
           'sm' => 'Small',
