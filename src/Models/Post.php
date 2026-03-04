@@ -26,7 +26,7 @@ class Post extends TimberPost
    * Get ACF fields for the post.
    * @return array|null
    */
-  public function acf(): ?array
+  public function fields(): ?array
   {
     $fields = get_fields($this->ID);
     return $fields ?: null;
