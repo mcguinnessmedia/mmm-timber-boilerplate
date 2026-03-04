@@ -1,24 +1,17 @@
-<section class='two-column content-{{ alignment }}'>
+{% extends 'partials/sections/_section-wrapper.twig' %}
 
-  {% include 'views/partials/components/media-selector.twig' with { media: media } %}
+{% block section_content %}
 
-  <div class='content'>
+  <div class='c-two-column c-two-column--{{ fields.alignment }}'>
 
-    <h2>{{ content.heading|wp_kses_post }}</h2>
+    <figure class='c-two-column__media'>
+      {% include 'partials/media.twig' with { media: fields.media } %}
+    </figure>
 
-    {{ content.content|wp_kses_post }}
-
-    {% if content.buttons %}
-      {% for btn in content.buttons %}
-        {% include 'views/partials/components/button.twig' with {
-          label: btn.button.title,
-          url: btn.button.url,
-          target: btn.button.target,
-          variant: loop.first ? 'primary' : 'outline',
-        } %}
-      {% endfor %}
-    {% endif %}
+    <div class='c-two-column__content'>
+      {% include 'partials/content.twig' with { content: fields.content } %}
+    </div>
 
   </div>
 
-</section>
+{% endblock %}

@@ -10,11 +10,23 @@ class SectionSettingsPartial extends BasePartial
   {
     $fields = new FieldsBuilder('section_settings');
 
-    $fields->addGroup('section')
+    $fields->addGroup('section', [
+      'label' => 'Section Settings',
+    ])
       ->addText('anchor_id',
       [
         'label' => 'Anchor ID',
         'instructions' => 'Optional ID for anchor links (do not include #)',
+      ])
+      ->addSelect('semantic_element', [
+        'label' => 'HTML Element',
+        'choices' => [
+          'section' => 'Section',
+          'div'     => 'Div',
+          'aside'   => 'Aside',
+          'header'  => 'Header',
+        ],
+        'default_value' => 'section'
       ])
       ->addSelect('container_width', [
         'label' => 'Container Width',
@@ -63,5 +75,7 @@ class SectionSettingsPartial extends BasePartial
         'ui' => 1,
       ])
     ->endGroup();
+
+    return $fields;
   }
 }
