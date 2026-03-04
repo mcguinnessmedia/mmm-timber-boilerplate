@@ -19,6 +19,7 @@ class TwoColumnLayout extends BaseLayout {
   protected function addFields(): void
   {
     $this->fields
+      ->addTab('Content')
       ->addRadio( 'alignment', [
           'label' => 'Alignment',
           'choices' => [
@@ -29,6 +30,7 @@ class TwoColumnLayout extends BaseLayout {
         ]
       )
       ->addFields( ContentPartial::get() )
+      ->addTab('Media')
       ->addFields( MediaSelectorPartial::get() );
   }
 }

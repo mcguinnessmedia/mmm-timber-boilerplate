@@ -2,8 +2,8 @@
 
 namespace MMM\FieldGroups\FlexibleContent;
 
+use MMM\FieldGroups\Partials\{MotionPartial, SectionSettingsPartial};
 use StoutLogic\AcfBuilder\{FieldNameCollisionException, FieldsBuilder};
-use MMM\FieldGroups\Partials\{SectionSettingsPartial, MotionPartial};
 
 abstract class BaseLayout {
   protected FieldsBuilder $fields;
@@ -16,12 +16,15 @@ abstract class BaseLayout {
   {
     $this->fields = new FieldsBuilder( $this->getName() );
 
-    // Global section primitives
-    $this->fields->addFields(SectionSettingsPartial::get());
-    $this->fields->addFields(MotionPartial::get());
-
     // Layout-specific fields
     $this->addFields();
+
+    // Global section primitives
+    $this->fields->addTab( 'Section Settings' )
+      ->addFields( SectionSettingsPartial::get() );
+
+    $this->fields->addTab( 'Motion' )
+      ->addFields( MotionPartial::get() );
 
     return $this->fields;
   }
