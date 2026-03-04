@@ -2,7 +2,7 @@
 
 namespace MMM\FieldGroups;
 
-use MMM\FieldGroups\FlexibleContent\{TwoColumnLayout};
+use MMM\FieldGroups\FlexibleContent\{SpacerLayout, TwoColumnLayout};
 use MMM\Traits\HasFlexibleContent;
 
 class PageContent extends BaseFieldGroup {
@@ -11,6 +11,7 @@ class PageContent extends BaseFieldGroup {
   public function __construct()
   {
     $this->registerLayout( new TwoColumnLayout() );
+    $this->registerLayout( new SpacerLayout() );
   }
 
   public function getTitle(): string
