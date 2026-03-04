@@ -5,8 +5,7 @@ namespace MMM\FieldGroups\FlexibleContent;
 use MMM\FieldGroups\Partials\ContentPartial;
 use MMM\FieldGroups\Partials\MediaSelectorPartial;
 
-class TwoColumnLayout extends BaseLayout
-{
+class TwoColumnLayout extends BaseLayout {
   public function getName(): string
   {
     return 'two-column';
@@ -20,14 +19,16 @@ class TwoColumnLayout extends BaseLayout
   protected function addFields(): void
   {
     $this->fields
-      ->addRadio('alignment', [
-          'label' => __('Alignment', 'mcguinnessmedia'),
+      ->addRadio( 'alignment', [
+          'label' => 'Alignment',
           'choices' => [
-            'left' => __('Left', 'mcguinnessmedia'),
-            'right' => __('Right', 'mcguinnessmedia'),
-          ]]
+            'left' => 'Left',
+            'right' => 'Right',
+          ],
+          'default_value' => 'left',
+        ]
       )
-      ->addFields(ContentPartial::get())
-      ->addFields(MediaSelectorPartial::get());
+      ->addFields( ContentPartial::get() )
+      ->addFields( MediaSelectorPartial::get() );
   }
 }
