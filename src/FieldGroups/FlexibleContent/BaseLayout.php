@@ -2,11 +2,9 @@
 
 namespace MMM\FieldGroups\FlexibleContent;
 
-use StoutLogic\AcfBuilder\FieldNameCollisionException;
-use StoutLogic\AcfBuilder\FieldsBuilder;
+use StoutLogic\AcfBuilder\{FieldNameCollisionException, FieldsBuilder};
 
-abstract class BaseLayout
-{
+abstract class BaseLayout {
   protected FieldsBuilder $fields;
 
   /**
@@ -15,7 +13,7 @@ abstract class BaseLayout
    */
   public function build(): FieldsBuilder
   {
-    $this->fields = new FieldsBuilder($this->getName());
+    $this->fields = new FieldsBuilder( $this->getName() );
     $this->addFields();
     return $this->fields;
   }
