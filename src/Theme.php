@@ -4,13 +4,12 @@ namespace MMM;
 
 use MMM\FieldGroups\{PageContent, SeoFields};
 use MMM\Models\Post;
-use MMM\Services\{
-  FieldGroupRegistryService,
+use MMM\Services\{FieldGroupRegistryService,
+  ImageOptimizationService,
   LaunchChecklistService,
   PostTypeRegistryService,
   TwigFilterService,
-  ViteService
-};
+  ViteService};
 use MMM\Setup\Security;
 use MMM\Traits\Singleton;
 use Timber\{Site, Timber};
@@ -78,6 +77,9 @@ class Theme
 
     // Add launch checklist
     LaunchChecklistService::getInstance();
+
+    // Instantiate image optimization service
+    ImageOptimizationService::getInstance();
 
     // Register hooks
     add_action('after_setup_theme', [$this, 'setup']);
