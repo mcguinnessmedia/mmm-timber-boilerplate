@@ -15,7 +15,7 @@ abstract class BasePostType
    * Provides any additional configuration the post type needs.
    * @return array
    */
-  protected static function additonalArgs(): array
+  protected static function additionalArgs(): array
   {
     return [];
   }
