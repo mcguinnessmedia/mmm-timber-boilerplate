@@ -12,7 +12,11 @@ class FieldGroupRegistryService
 
   private array $fieldGroups = [];
 
-  public function init(): void
+  private function init(): void
+  {
+  }
+
+  public function boot(): void
   {
     add_action('acf/init', [$this, 'registerAll']);
   }

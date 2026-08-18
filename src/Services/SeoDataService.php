@@ -60,7 +60,7 @@ class SeoDataService
         $value = $value[$k];
       }
 
-      return $value ?: $default;
+      return $value ?? $default;
     }
 
     return $data[$key] ?? $default;
