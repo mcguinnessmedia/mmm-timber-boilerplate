@@ -12,7 +12,9 @@
     {{ function('wp_body_open') }}
 
     <header>
-      <div class='site-logo'></div>
+      <div class='site-logo'>
+        {# TODO: add logo #}
+      </div>
       <nav>
         <ul>
           {% for item in menu.items %}
@@ -33,6 +35,14 @@
     <footer>
 
     </footer>
+
+    <div class="subfooter">
+      <p>Copyright &copy; {{ now|date('Y') }} {{ site.name }}. All rights reserved. Powered by
+        <a href='https://mcguinnessmedia.com/' target='_blank' rel='noopener noreferrer'>
+          McGuinness Media & Marketing
+        </a>
+        .</p>
+    </div>
 
     {{ function('wp_footer') }}
   </body>
