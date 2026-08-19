@@ -8,6 +8,7 @@ use MMM\Services\{FieldGroupRegistryService,
   ImageOptimizationService,
   LaunchChecklistService,
   PostTypeRegistryService,
+  TaxonomyRegistryService,
   TwigFilterService,
   ViteService};
 use MMM\Setup\Security;
@@ -90,6 +91,7 @@ class Theme
     add_filter('timber/post/classmap', [$this, 'classmap']);
 
     $this->registerPostTypes();
+    $this->registerTaxonomies();
     $this->registerFieldGroups();
   }
 
@@ -127,5 +129,16 @@ class Theme
     $postTypeRegistry = PostTypeRegistryService::getInstance();
 
     // $postTypeRegistry->register(BasePostType::class);
+  }
+
+  /**
+   * Register custom taxonomies using the TaxonomyRegistryService.
+   * @return void
+   */
+  private function registerTaxonomies(): void
+  {
+    $taxonomyRegistry = TaxonomyRegistryService::getInstance();
+
+    // $taxonomyRegistry->register(BaseTaxonomy::class);
   }
 }
