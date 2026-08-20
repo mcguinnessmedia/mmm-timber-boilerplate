@@ -2,8 +2,7 @@
 
 namespace MMM\FieldGroups\FlexibleContent;
 
-use MMM\FieldGroups\Partials\ContentPartial;
-use MMM\FieldGroups\Partials\MediaSelectorPartial;
+use MMM\FieldGroups\Partials\{ContentPartial, MediaSelectorPartial};
 
 class TwoColumnLayout extends BaseLayout {
   public function getName(): string
