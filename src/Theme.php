@@ -2,6 +2,7 @@
 
 namespace MMM;
 
+use MMM\OptionsPages\ThemeOptions;
 use MMM\FieldGroups\{PageContent, SeoFields};
 use MMM\Models\Post;
 use MMM\Services\{FieldGroupRegistryService,
@@ -92,6 +93,7 @@ class Theme
 
     $this->registerPostTypes();
     $this->registerTaxonomies();
+    $this->registerOptionsPages();
     $this->registerFieldGroups();
   }
 
@@ -140,5 +142,16 @@ class Theme
     $taxonomyRegistry = TaxonomyRegistryService::getInstance();
 
     // $taxonomyRegistry->register(BaseTaxonomy::class);
+  }
+
+  /**
+   * Register custom taxonomies using the TaxonomyRegistryService.
+   * @return void
+   */
+  private function registerOptionsPages(): void
+  {
+    $optionsPageRegistryRegistry = TaxonomyRegistryService::getInstance();
+
+    $optionsPageRegistryRegistry->register(ThemeOptions::class);
   }
 }
