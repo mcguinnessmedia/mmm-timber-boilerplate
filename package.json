@@ -2,15 +2,12 @@
   "name": "mmm-boilerplate",
   "type": "module",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "private": true,
   "scripts": {
+    "typecheck": "tsc --noEmit",
     "build": "vite build --mode production",
     "dev": "vite build --watch --mode development"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
     "autoprefixer": "^10.4.23",
     "postcss": "^8.5.6",
