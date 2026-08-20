@@ -59,6 +59,7 @@ class Theme
   {
     $context['site'] = new Site();
     $context['menu'] = Timber::get_menu('primary');
+    $context['analytics'] = get_field('analytics', 'option');
 
     return $context;
   }
