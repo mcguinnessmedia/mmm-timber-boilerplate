@@ -3,7 +3,7 @@
 namespace MMM;
 
 use MMM\OptionsPages\ThemeOptions;
-use MMM\FieldGroups\{PageContent, SeoFields};
+use MMM\FieldGroups\{PageContent, SeoFields, ThemeOptionsFields};
 use MMM\Models\Post;
 use MMM\Services\{FieldGroupRegistryService,
   ImageOptimizationService,
@@ -118,6 +118,7 @@ class Theme
     // Add field groups here
     $fieldsRegistry->register(SeoFields::class);
     $fieldsRegistry->register(PageContent::class);
+    $fieldsRegistry->register(ThemeOptionsFields::class);
 
     $fieldsRegistry->boot();
   }
