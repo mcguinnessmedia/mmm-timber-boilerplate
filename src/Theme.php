@@ -8,6 +8,7 @@ use MMM\Models\Post;
 use MMM\Services\{FieldGroupRegistryService,
   ImageOptimizationService,
   LaunchChecklistService,
+  OptionsPageRegistryService,
   PostTypeRegistryService,
   TaxonomyRegistryService,
   TwigFilterService,
@@ -147,13 +148,13 @@ class Theme
   }
 
   /**
-   * Register custom taxonomies using the TaxonomyRegistryService.
+   * Register ACF options pages using the OptionsPageRegistryService.
    * @return void
    */
   private function registerOptionsPages(): void
   {
-    $optionsPageRegistryRegistry = TaxonomyRegistryService::getInstance();
+    $optionsPageRegistry = OptionsPageRegistryService::getInstance();
 
-    $optionsPageRegistryRegistry->register(ThemeOptions::class);
+    $optionsPageRegistry->register(ThemeOptions::class);
   }
 }
