@@ -1,0 +1,181 @@
+{# views/partials/sections/boxed_cta.twig #}
+{% set bg = fields.background ?: 'white' %}
+{% set groups = fields.groups ?: [] %}
+
+<section class="boxed-cta boxed-cta--bg-{{ bg }}"
+         {% if fields.anchor_id %}id="{{ fields.anchor_id }}"{% endif %}>
+  <div class="boxed-cta__inner">
+
+    {% if fields.heading or fields.content %}
+      <header class="boxed-cta__intro boxed-cta__intro--{{ fields.intro_alignment ?: 'left' }}">
+        {% if fields.heading %}
+          <h2 class="boxed-cta__heading">{{ fields.heading }}</h2>
+        {% endif %}
+        {% if fields.content %}
+          <div class="boxed-cta__content">{{ fields.content }}</div>
+        {% endif %}
+      </header>
+    {% endif %}
+
+    {% for group in groups %}
+      {% if group.cards %}
+        <div class="boxed-cta__group">
+
+          {% if group.subheading %}
+            <h3 class="boxed-cta__subheading">{{ group.subheading }}</h3>
+          {% endif %}
+
+          <ul class="boxed-cta__grid boxed-cta__grid--cols-{{ group.columns ?: 3 }}{{ group.row_size == 'square' ? ' boxed-cta__grid--square' }}" role="list">
+            {% for card in group.cards %}
+              {# Reset per box so values never leak from the previous one #}
+              {% set img = null %}
+              {% set title = null %}
+              {% set text = null %}
+              {% set href = null %}
+              {% set target = null %}
+              {% set cue = 'Learn more' %}
+              {% set style = card.style ?: 'standard' %}
+              {% set is_text = style == 'text' %}
+
+              {% if card.source in ['service', 'industry'] %}
+                {# Service / Industry box: photo, name, excerpt and link come from that page #}
+                {% set entry = function('MMM\\Queries\\EntryCardQuery::get',
+                  card.source == 'industry' ? card.industry : card.service,
+                  card.image) %}
+                {% if entry %}
+                  {% set img = entry.image %}
+                  {% set title = card.title ?: entry.title %}
+                  {% set text = card.text ?: entry.excerpt %}
+                  {% set href = entry.link %}
+                {% endif %}
+              {% else %}
+                {# Custom box (also any box made before Box Type existed) #}
+                {% set img = card.image ? get_image(card.image) : null %}
+                {% set title = card.title %}
+                {% set text = card.text %}
+                {% set href = card.link.url ?? null %}
+                {% set target = card.link.target ?? null %}
+                {% set cue = card.link.title ?? 'Learn more' %}
+              {% endif %}
+
+              {# Video: plays in a pop-up and takes the place of the box's link #}
+              {% set video = not is_text and card.video ? card.video : null %}
+              {% if video %}
+                {% set href = video %}
+                {% set target = null %}
+                {% set cue = 'Watch video' %}
+              {% endif %}
+
+              {# No image picked? Use the YouTube thumbnail #}
+              {% set video_thumb = null %}
+              {% if video and not img %}
+                {% set yt_id = null %}
+                {% if 'youtu.be/' in video %}
+                  {% set yt_id = video|split('youtu.be/')|last|split('?')|first %}
+                {% elseif '/shorts/' in video %}
+                  {% set yt_id = video|split('/shorts/')|last|split('?')|first %}
+                {% elseif '/embed/' in video %}
+                  {% set yt_id = video|split('/embed/')|last|split('?')|first %}
+                {% elseif 'v=' in video %}
+                  {% set yt_id = video|split('v=')|last|split('&')|first %}
+                {% endif %}
+                {% if yt_id %}
+                  {% set video_thumb = 'https://i.ytimg.com/vi/' ~ yt_id ~ '/maxresdefault.jpg' %}
+                {% endif %}
+              {% endif %}
+
+              {% set tag = href and not is_text ? 'a' : 'div' %}
+
+              {% if img or is_text or video_thumb %}
+                <li class="boxed-cta__item boxed-cta__item--w-{{ card.width ?: 'single' }} boxed-cta__item--h-{{ card.height ?: 'standard' }}">
+                  <{{ tag }} class="boxed-cta__card boxed-cta__card--{{ style }}{{ tag == 'a' ? ' boxed-cta__card--link' }}{{ video ? ' boxed-cta__card--video' }}{{ not is_text and not title and not href ? ' boxed-cta__card--image-only' }}"
+                    {% if tag == 'a' %}
+                      href="{{ href }}"
+                      {% if target %}target="{{ target }}" rel="noopener"{% endif %}
+                    {% endif %}
+                    {% if video %}
+                      data-video-lightbox
+                      aria-label="Play video{{ title ? ': ' ~ title }}"
+                    {% endif %}>
+
+                    {% if video %}
+                      <span class="boxed-cta__play" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="24" height="24" focusable="false">
+                          <path fill="currentColor" d="M8 5.14v13.72a1 1 0 0 0 1.52.85l10.8-6.86a1 1 0 0 0 0-1.7L9.52 4.29A1 1 0 0 0 8 5.14z"/>
+                        </svg>
+                      </span>
+                    {% endif %}
+
+                    {% if img and not is_text %}
+                      <img class="boxed-cta__image"
+                           src="{{ img.src('large') }}"
+                           srcset="{{ img.srcset }}"
+                           sizes="{{ card.width == 'full' ? '(min-width: 1024px) 80rem, 100vw'
+                                   : card.width in ['double', 'half'] ? '(min-width: 1024px) 50vw, 100vw'
+                                   : '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw' }}"
+                           alt="{{ title ? '' : img.alt }}"
+                           loading="lazy">
+                    {% endif %}
+
+                    {% if video_thumb and not is_text %}
+                      <img class="boxed-cta__image"
+                           src="{{ video_thumb }}"
+                           alt=""
+                           loading="lazy">
+                    {% endif %}
+
+                    {% if is_text %}
+                      {# Intro tile: real heading, normal text link #}
+                      <span class="boxed-cta__body">
+                        <span class="boxed-cta__text">
+                          {% if title %}
+                            <h2 class="boxed-cta__title">{{ title }}</h2>
+                          {% endif %}
+                          {% if text %}
+                            <span class="boxed-cta__description">{{ text }}</span>
+                          {% endif %}
+                          {% if href %}
+                            <a class="boxed-cta__text-link" href="{{ href }}"
+                               {% if target %}target="{{ target }}" rel="noopener"{% endif %}>{{ cue }}</a>
+                          {% endif %}
+                        </span>
+                      </span>
+
+                    {% elseif title or href %}
+                      <span class="boxed-cta__body">
+
+                        <span class="boxed-cta__text">
+                          {% if title %}
+                            <span class="boxed-cta__title">{{ title }}</span>
+                          {% elseif href %}
+                            <span class="screen-reader-text">{{ cue }}</span>
+                          {% endif %}
+
+                          {% if style != 'standard' and text %}
+                            <span class="boxed-cta__description">{{ text }}</span>
+                          {% endif %}
+
+                          {% if style == 'featured' and href %}
+                            <span class="boxed-cta__cue">{{ cue }}</span>
+                          {% endif %}
+                        </span>
+
+                        {% if style == 'banner' and href %}
+                          <span class="boxed-cta__button">{{ cue }}</span>
+                        {% endif %}
+
+                      </span>
+                    {% endif %}
+
+                  </{{ tag }}>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+
+        </div>
+      {% endif %}
+    {% endfor %}
+
+  </div>
+</section>

@@ -19,13 +19,13 @@ class TwoColumnLayout extends BaseLayout {
   {
     $this->fields
       ->addTab('Content')
-      ->addRadio( 'alignment', [
-          'label' => 'Alignment',
+      ->addButtonGroup( 'alignment', [
+          'label' => 'Image Side',
           'choices' => [
-            'left' => 'Left',
-            'right' => 'Right',
+            'left' => 'Image Left',
+            'right' => 'Image Right',
           ],
-          'default_value' => 'left',
+          'default_value' => 'right',
         ]
       )
       ->addFields( ContentPartial::get() )

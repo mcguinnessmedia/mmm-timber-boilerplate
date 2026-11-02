@@ -2,7 +2,7 @@
 
 namespace MMM\FieldGroups;
 
-use MMM\FieldGroups\FlexibleContent\{CtaLayout, SpacerLayout, StatsLayout, TwoColumnLayout};
+use MMM\FieldGroups\FlexibleContent\{CtaLayout, SpacerLayout, StatsLayout, TwoColumnLayout, BoxedCtaLayout};
 use MMM\Traits\HasFlexibleContent;
 
 class PageContent extends BaseFieldGroup {
@@ -14,6 +14,7 @@ class PageContent extends BaseFieldGroup {
     $this->registerLayout( new StatsLayout() );
     $this->registerLayout( new CtaLayout() );
     $this->registerLayout( new SpacerLayout() );
+    $this->registerLayout( new BoxedCtaLayout() );
   }
 
   public function getTitle(): string

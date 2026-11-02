@@ -1,23 +1,80 @@
-{% extends "partials/sections/_section-wrapper.twig" %}
+{% extends 'partials/sections/_section-wrapper.twig' %}
 
 {% block section_content %}
 
-  {% include "partials/content.twig" with { content: fields.content } %}
+  {% set style = fields.style|default('circles') %}
+  {% set is_features = style == 'features' %}
+  {% set has_side = is_features ? (fields.features or fields.image) : fields.stats %}
+  {% set has_content = fields.content.heading or fields.content.lead or fields.content.content or fields.content.buttons %}
 
-  {% if fields.stats %}
-    <div class="stats">
-      {% for stat in fields.stats %}
-        <div class="stat">
-          <div class="stat__number"
-               data-count="{{ stat.number }}">
-            {{ stat.number }}{{ stat.suffix }}
-          </div>
-          <div class="stat__label">
-            {{ stat.label }}
-          </div>
+  <div class="c-stats c-stats--{{ style }}{{ has_side ? ' c-stats--has-stats' }}">
+
+    {% if is_features %}
+
+      {# ---------- Features + Image ---------- #}
+      <div class="c-stats__content">
+        {% if has_content %}
+          {% include 'partials/content.twig' with { content: fields.content } only %}
+        {% endif %}
+
+        {% if fields.features %}
+          <ul class="c-stats__features" role="list">
+            {% for feature in fields.features %}
+              <li class="c-feature">
+                {% include 'partials/icon.twig' with { icon: feature.icon, class: 'c-feature__icon' } only %}
+                <p class="c-feature__text">{{ feature.text }}</p>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+
+      {% if fields.image %}
+        <div class="c-stats__media">
+          <img
+            class="c-stats__image"
+            src="{{ fields.image.url }}"
+            alt="{{ fields.image.alt }}"
+            width="{{ fields.image.width }}"
+            height="{{ fields.image.height }}"
+            loading="lazy"
+            decoding="async"
+          >
         </div>
-      {% endfor %}
-    </div>
-  {% endif %}
+      {% endif %}
+
+    {% else %}
+
+      {# ---------- Circles / Cards ---------- #}
+      <div class="c-stats__content">
+        {% include 'partials/content.twig' with { content: fields.content } only %}
+      </div>
+
+      {% if fields.stats %}
+        <ul class="c-stats__grid" role="list">
+          {% for stat in fields.stats %}
+            <li class="c-stat c-stat--{{ style }} c-stat--{{ stat.accent|default('grey') }}">
+
+              {% if stat.icon %}
+                <span class="c-stat__icon-wrap">
+                  {% include 'partials/icon.twig' with { icon: stat.icon, class: 'c-stat__icon' } only %}
+                </span>
+              {% endif %}
+
+              <div class="c-stat__text">
+                <p class="c-stat__number">
+                  {{ stat.number }}<span class="c-stat__suffix">{{ stat.suffix }}</span>
+                </p>
+                <p class="c-stat__label">{{ stat.label }}</p>
+              </div>
+
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+    {% endif %}
+
+  </div>
 
 {% endblock %}
